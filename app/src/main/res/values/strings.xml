@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Runnis</string>
+    <string name="title_home">Home</string>
+    <string name="title_add">Add</string>
+    <string name="title_myRunns">My Runns</string>
+    <string name="title_setting">Settings</string>
+    <string name="title_diagram">Overview</string>
+</resources>

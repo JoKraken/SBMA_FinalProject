@@ -1,0 +1,15 @@
+home
+- show last/actual run
+
+add ? 
+- start new run
+
+myRunns
+- show own runns as list
+- show totals (km, hour, fittnis) as diagram
+- calender (day marked when you run there) ?
+
+settings
+- gps 
+- bluetooth 
+- login change (email, passwort)

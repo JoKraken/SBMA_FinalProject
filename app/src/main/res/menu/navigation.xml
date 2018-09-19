@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
+
+    <!--<item-->
+    <!--android:id="@+id/navigation_add"-->
+    <!--android:icon="@drawable/ic_plus"-->
+    <!--android:title="@string/title_add" />-->
+
+    <item
+        android:id="@+id/navigation_myRunns"
+        android:icon="@drawable/ic_shoe"
+        android:title="@string/title_myRunns" />
+
+    <!--<item-->
+    <!--android:id="@+id/navigation_diagram"-->
+    <!--android:icon="@drawable/ic_diagram"-->
+    <!--android:title="@string/title_diagram" />-->
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/title_setting" />
+
+</menu>
