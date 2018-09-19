@@ -2,23 +2,30 @@ package com.example.johanna.runis
 
 import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 class FragmentHome : Fragment() {
+    internal var activityCallBack: FragmentHomeListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    interface FragmentHomeListener {
+        fun onSwipeLeftHome()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var rootView = inflater!!.inflate(R.layout.fragment_home, container, false)
-        return rootView
-    }
+        activityCallBack = context as FragmentHomeListener
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        rootView.setOnTouchListener(object : OnSwipeTouchListener() {
+            override fun onSwipeLeft() {
+                Log.e("ViewSwipe", "Home Left")
+                activityCallBack!!.onSwipeLeftHome()
+            }
+        })
+
+        return rootView
     }
 
 }
