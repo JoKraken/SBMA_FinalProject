@@ -2,16 +2,16 @@
 
 
 
-## What we want to do
+### What we want to do
 
-We want to programm a sport App. You can do the following thinks:
+We want to program a sport App. You can do the following things:
 
 
 
-* track the heartbeat druring the running
+* track the heartbeat during the running
 
 * track your gps position
 
-* see a overview over the last runs
+* see a overview of the last runs
 
-* trun on and of the sensors
+* turn on and off the sensors
