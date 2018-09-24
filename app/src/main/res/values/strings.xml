@@ -5,4 +5,7 @@
     <string name="title_myRunns">My Runns</string>
     <string name="title_setting">Settings</string>
     <string name="title_diagram">Overview</string>
+    <string name="settings_headline1">Sensoren</string>
+    <string name="settings_bluetooth">Bluetooth</string>
+    <string name="settings_gps">GPS</string>
 </resources>
