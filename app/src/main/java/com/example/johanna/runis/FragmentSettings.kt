@@ -1,21 +1,30 @@
 package com.example.johanna.runis
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.support.v7.preference.PreferenceFragmentCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.johanna.runis.R.id.switchGps
+import android.content.SharedPreferences
+import android.support.v7.widget.RecyclerView
 
-class FragmentSettings: Fragment() {
+
+class FragmentSettings: PreferenceFragmentCompat(){
+
     internal var activityCallBack: FragmentSettingsListener? = null
 
     interface FragmentSettingsListener {
         fun onSwipeRightSettings()
+        fun stopPreference()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView = inflater!!.inflate(R.layout.fragment_setting, container, false)
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onCreateRecyclerView(inflater: LayoutInflater?, parent: ViewGroup?, savedInstanceState: Bundle?): RecyclerView {
+        Log.d("DEBUG", "onCreateRecyclerView")
+        var rootView =  super.onCreateRecyclerView(inflater, parent, savedInstanceState)
         activityCallBack = context as FragmentSettingsListener
 
         rootView.setOnTouchListener(object : OnSwipeTouchListener() {
@@ -24,6 +33,18 @@ class FragmentSettings: Fragment() {
                 activityCallBack!!.onSwipeRightSettings()
             }
         })
+
         return rootView
+    }
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        addPreferencesFromResource(R.xml.pref_setting)
+
+    }
+
+    override fun onStop() {
+        Log.d("DEBUG", "onStop")
+        activityCallBack!!.stopPreference()
+        super.onStop()
     }
 }

@@ -7,5 +7,10 @@
     <string name="title_diagram">Overview</string>
     <string name="settings_headline1">Sensoren</string>
     <string name="settings_bluetooth">Bluetooth</string>
+    <string name="settings_bluetooth_sum">Trun Bluetooth on or off</string>
     <string name="settings_gps">GPS</string>
+    <string name="settings_gps_sum">Trun GPS on or off</string>
+    <string name="settings_headline2">Change Name</string>
+    <string name="settings_name">Name</string>
+    <string name="settings_headline3">Change Theme</string>
 </resources>

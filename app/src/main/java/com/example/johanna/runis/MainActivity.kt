@@ -1,6 +1,7 @@
 package com.example.johanna.runis
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -27,8 +28,7 @@ class MainActivity : AppCompatActivity(), FragmentHome.FragmentHomeListener, Fra
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_settings -> {
-                val fragment = FragmentSettings()
-                addFragment(fragment)
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, FragmentSettings()).commit()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -52,6 +52,16 @@ class MainActivity : AppCompatActivity(), FragmentHome.FragmentHomeListener, Fra
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
     }
 
+    //get settings
+    override fun stopPreference() {
+        val prefManager = PreferenceManager.getDefaultSharedPreferences(this)
+        val gps = prefManager.getBoolean("switch_gps", true)
+        val bluetooth = prefManager.getBoolean("switch_bluetooth", true)
+        val name = prefManager.getString("edit_name", "name")
+        Log.d("DEBUG", "gps: " + gps + ", bluetooth: "+bluetooth+ ", name: "+name)
+    }
+
+    //function for swipen
     override fun onSwipeLeftHome() {
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
