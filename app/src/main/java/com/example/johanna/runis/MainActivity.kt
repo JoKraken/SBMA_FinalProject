@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), FragmentHome.FragmentHomeListener, Fra
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setNewTheme()
         setContentView(R.layout.activity_main)
 
         content = findViewById(R.id.fragment_container) as FrameLayout
@@ -46,6 +47,21 @@ class MainActivity : AppCompatActivity(), FragmentHome.FragmentHomeListener, Fra
 
         val fragment = FragmentHome()
         supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit()
+    }
+
+    private fun setNewTheme(){
+        Log.d("DEBUG", "setNewTheme")
+        val prefManager = PreferenceManager.getDefaultSharedPreferences(this)
+        Log.d("DEBUG", "setNewTheme2")
+        val theme = prefManager.getString("list_preference_1", "1")
+        Log.d("DEBUG", "setNewTheme3")
+        if(theme.equals("1")){
+            Log.d("DEBUG", "setNewTheme4")
+            setTheme(android.R.style.Theme_Black_NoTitleBar);
+        }else if(theme.equals("2")){
+            Log.d("DEBUG", "setNewTheme5")
+            setTheme(android.R.style.Theme_Light_NoTitleBar);
+        }
     }
 
     private fun addFragment(fragment: Fragment) {

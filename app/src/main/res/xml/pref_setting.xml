@@ -29,7 +29,8 @@
             android:key="edit_name"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="@string/settings_name" />
+            android:title="@string/settings_name"
+            android:summary="@string/settings_name_sum" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -37,10 +38,11 @@
         android:key="pref_key_storage_settings">
         <ListPreference
             android:defaultValue="1"
-            android:entries="@android:array/phoneTypes"
-            android:entryValues="@android:array/organizationTypes"
+            android:entries="@array/themes"
+            android:entryValues="@array/themesValues"
             android:key="list_preference_1"
-            android:title="List preference" />
+            android:title="@string/settings_headline3"
+            android:summary="@string/settings_headline3_sum" />
     </PreferenceCategory>
 
 </PreferenceScreen>

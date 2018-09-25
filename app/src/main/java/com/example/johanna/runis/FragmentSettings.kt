@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import com.example.johanna.runis.R.id.switchGps
-import android.content.SharedPreferences
 import android.support.v7.widget.RecyclerView
 
 

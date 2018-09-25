@@ -13,4 +13,6 @@
     <string name="settings_headline2">Change Name</string>
     <string name="settings_name">Name</string>
     <string name="settings_headline3">Change Theme</string>
+    <string name="settings_headline3_sum">To change the Theme you have to start the App afterwoods again</string>
+    <string name="settings_name_sum">To change your Name please click on here</string>
 </resources>
