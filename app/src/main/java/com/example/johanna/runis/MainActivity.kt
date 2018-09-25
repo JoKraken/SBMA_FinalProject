@@ -3,22 +3,27 @@ package com.example.johanna.runis
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.FrameLayout
-import android.widget.Toast
 
-@Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
+class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
 
     private var content: FrameLayout? = null
     private var navigation: BottomNavigationView? = null
+    private var newRun: Boolean = false
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+    private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                val fragment = FragmentHome()
+                var fragment = Fragment()
+                if(newRun) {
+                    fragment = FragmentNewRun()
+                }else{
+                    fragment = FragmentHome()
+                }
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
@@ -49,23 +54,33 @@ class MainActivity : AppCompatActivity(), FragmentHome.FragmentHomeListener, Fra
         supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit()
     }
 
+    // set Theme
     private fun setNewTheme(){
-        Log.d("DEBUG", "setNewTheme")
         val prefManager = PreferenceManager.getDefaultSharedPreferences(this)
-        Log.d("DEBUG", "setNewTheme2")
         val theme = prefManager.getString("list_preference_1", "1")
-        Log.d("DEBUG", "setNewTheme3")
         if(theme.equals("1")){
-            Log.d("DEBUG", "setNewTheme4")
             setTheme(android.R.style.Theme_Black_NoTitleBar);
         }else if(theme.equals("2")){
-            Log.d("DEBUG", "setNewTheme5")
             setTheme(android.R.style.Theme_Light_NoTitleBar);
         }
     }
 
     private fun addFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
+    }
+
+    //end run
+    override fun endRun() {
+        newRun = false
+        val fragment = FragmentHome()
+        addFragment(fragment)
+    }
+
+    //start new run
+    override fun newRun() {
+        newRun = true
+        val fragment = FragmentNewRun()
+        addFragment(fragment)
     }
 
     //get settings
@@ -77,7 +92,10 @@ class MainActivity : AppCompatActivity(), FragmentHome.FragmentHomeListener, Fra
         Log.d("DEBUG", "gps: " + gps + ", bluetooth: "+bluetooth+ ", name: "+name)
     }
 
-    //function for swipen
+    //function for swipen the menu
+    override fun onSwipeLeftNewRun() {
+        navigation!!.selectedItemId = R.id.navigation_myRunns
+    }
     override fun onSwipeLeftHome() {
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
