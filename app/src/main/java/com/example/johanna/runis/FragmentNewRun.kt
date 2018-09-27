@@ -34,7 +34,7 @@ class  FragmentNewRun: Fragment() {
             }
         })
 
-        val check = rootView.findViewById(R.id.check) as FloatingActionButton
+        val check = rootView.findViewById<FloatingActionButton>(R.id.check) as FloatingActionButton
         check.setOnClickListener {
             pauseChronometer()
             activityCallBack!!.endRun(chronometer!!.base)

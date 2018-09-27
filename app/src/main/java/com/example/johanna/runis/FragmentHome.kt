@@ -29,7 +29,7 @@ class FragmentHome : Fragment() {
             }
         })
 
-        val add = rootView.findViewById(R.id.add) as FloatingActionButton
+        val add = rootView.findViewById<FloatingActionButton>(R.id.add)
         add.setOnClickListener {
             activityCallBack!!.newRun()
         }
