@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory
+        android:title="@string/settings_headline1"
+        android:key="pref_key_storage_settings">
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:id="@+id/switchGps"
+            android:defaultValue="true"
+            android:key="switch_gps"
+            android:title="@string/settings_gps"
+            android:summary="@string/settings_gps_sum" />
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:id="@+id/switchBluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="true"
+            android:key="switch_bluetooth"
+            android:summary="@string/settings_bluetooth_sum"
+            android:title="@string/settings_bluetooth" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_headline2"
+        android:key="pref_key_storage_settings">
+        <EditTextPreference
+            android:key="edit_name"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/settings_name"
+            android:summary="@string/settings_name_sum" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_headline3"
+        android:key="pref_key_storage_settings">
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/themes"
+            android:entryValues="@array/themesValues"
+            android:key="list_preference_1"
+            android:title="@string/settings_headline3"
+            android:summary="@string/settings_headline3_sum" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
