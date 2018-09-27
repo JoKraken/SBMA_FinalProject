@@ -210,6 +210,11 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         addFragment(fragment)
     }
 
+    override fun connectBT(){
+        val fragment = BluetoothFragment()
+        addFragment(fragment)
+    }
+
     fun startChronometer() {
         if (!newRun) {
             chronometer!!.start()

@@ -15,10 +15,32 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     buildTypes {
         release {
+            buildConfigField "String", "MDS_VERSION", "\"1.13.0\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField "String", "MDS_VERSION", "\"1.13.0\""
+        }
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
+        flatDir {
+            dirs './', '../../../Movesense/' // Folders to look for jar & aar libraries
         }
     }
 }
@@ -41,4 +63,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.polidea.rxandroidble:rxandroidble:1.4.3'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    compile(name: 'mdslib', version: '1.13.0(1)-release', ext: 'aar')
 }
