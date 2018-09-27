@@ -1,18 +1,25 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.johanna.runis
 
+import android.app.ListFragment
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
+import android.widget.Toast
+import kotlinx.android.synthetic.main.fragment_myruns.*
 
-class FragmentMyRuns: Fragment() {
+@Suppress("UNREACHABLE_CODE", "DEPRECATION")
+class FragmentMyRuns: ListFragment() {
     internal var activityCallBack: FragmentMyRunsListener? = null
 
     interface FragmentMyRunsListener {
         fun onSwipeRightMyRuns()
         fun onSwipeLeftMyRuns()
+        fun onListClick(position: Int)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,7 +37,12 @@ class FragmentMyRuns: Fragment() {
                 activityCallBack!!.onSwipeRightMyRuns()
             }
         })
+
         return rootView
+    }
+    override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
+        super.onListItemClick(l, v, position, id)
+        activityCallBack!!.onListClick(position)
     }
 
 }
