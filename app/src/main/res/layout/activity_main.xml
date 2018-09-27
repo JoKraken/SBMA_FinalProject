@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:textSize="30sp"
+        android:visibility="invisible" />
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
