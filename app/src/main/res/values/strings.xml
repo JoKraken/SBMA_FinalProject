@@ -2,17 +2,28 @@
     <string name="app_name">Runnis</string>
     <string name="title_home">Home</string>
     <string name="title_add">Add</string>
-    <string name="title_myRunns">My Runns</string>
+    <string name="title_myRunns">My Runs</string>
     <string name="title_setting">Settings</string>
     <string name="title_diagram">Overview</string>
-    <string name="settings_headline1">Sensoren</string>
+    <string name="settings_headline1">Sensors</string>
     <string name="settings_bluetooth">Bluetooth</string>
-    <string name="settings_bluetooth_sum">Trun Bluetooth on or off</string>
+    <string name="settings_bluetooth_sum">Turn Bluetooth on or off</string>
     <string name="settings_gps">GPS</string>
-    <string name="settings_gps_sum">Trun GPS on or off</string>
+    <string name="settings_gps_sum">Turn GPS on or off</string>
     <string name="settings_headline2">Change Name</string>
     <string name="settings_name">Name</string>
     <string name="settings_headline3">Change Theme</string>
-    <string name="settings_headline3_sum">To change the Theme you have to start the App afterwoods again</string>
-    <string name="settings_name_sum">To change your Name please click on here</string>
+    <string name="settings_headline3_sum">To change the Theme you have to start the App afterwards again</string>
+    <string name="settings_name_sum">To change your name please click here</string>
+    <string name="bt_title_start">Ready to connect</string>
+    <string name="bt_title_connecting">Connecting...</string>
+    <string name="bt_title_accepted">Connected to device</string>
+    <string name="bt_title_cannotfind">Cannot find the MoveSense device</string>
+    <string name="bt_title_cannotconn">Cannot connect to the MoveSense device</string>
+    <string name="bt_button_connect">Connect</string>
+    <string name="instructions_text">This app demonstrates how to connect to the Movesense sensor.\n
+        - First scan for BLE devices and then connect to it by clicking it on the list.\n
+        - Connected devices are shown on the list with ***.\n
+        - Clicking on connected device will show device info.\n
+        - Long click on connected device will disconnect.</string>
 </resources>

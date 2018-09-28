@@ -14,6 +14,7 @@ import android.util.Log
 import android.widget.Chronometer
 import android.widget.FrameLayout
 import android.widget.Toast
+import com.example.johanna.runis.R.id.fragment_container
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -133,11 +134,11 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                     Toast.makeText(this@MainActivity, "ListViewRuns == null: "+runs.toString(), Toast.LENGTH_SHORT).show()
                 }
 
-                fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+                addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_settings -> {
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, FragmentSettings()).commit()
+                addFragment(FragmentSettings())
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -149,8 +150,8 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         setNewTheme()
         setContentView(R.layout.activity_main)
 
-        content = findViewById(R.id.fragment_container) as FrameLayout
-        navigation = findViewById(R.id.navigation) as BottomNavigationView
+        content = findViewById<FrameLayout>(R.id.fragment_container) as FrameLayout
+        navigation = findViewById<BottomNavigationView>(R.id.navigation) as BottomNavigationView
         navigation!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         val db = RunDB.get(this)
@@ -206,6 +207,11 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         startChronometer()
 
         val fragment = FragmentNewRun()
+        addFragment(fragment)
+    }
+
+    override fun connectBT(){
+        val fragment = BluetoothFragment()
         addFragment(fragment)
     }
 
