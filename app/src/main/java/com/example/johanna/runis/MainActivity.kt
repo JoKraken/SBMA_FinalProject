@@ -222,10 +222,19 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         }
     }
 
+    //create rundetails fragment and put the information in bundle
     override fun onListClick(position: Int){
         val db = RunDB.get(this)
         val run = db.runDao().getAll()[position]
-        Toast.makeText(this, run.toString(), Toast.LENGTH_SHORT).show()
+        val bundle = Bundle()
+        var array = Array<String>(5){""}
+        array[0] = run.date
+        array[1] = run.km
+        array[2] = run.time
+        bundle.putStringArray("details", array)
+        var fragment = FragmentRunDetails()
+        fragment.setArguments(bundle)
+        addFragment(fragment)
     }
 
     //get settings
@@ -242,6 +251,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         timer = time
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
+
     override fun onSwipeLeftHome() {
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
