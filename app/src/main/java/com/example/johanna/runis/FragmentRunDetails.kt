@@ -23,7 +23,7 @@ class FragmentRunDetails: Fragment() {
 
         if (getArguments() != null) {
             var arg = getArguments()!!.getStringArray("details")
-            Log.d("DEBUG_details", arg[0]+", "+arg[1]+", "+arg[2])
+            //Log.d("DEBUG_details", arg[0]+", "+arg[1]+", "+arg[2])
             val date = rootView.findViewById<TextView>(R.id.date) as TextView
             date.text = ""+arg[0]
             val km = rootView.findViewById<TextView>(R.id.km) as TextView

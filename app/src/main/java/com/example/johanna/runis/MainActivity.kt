@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                     val bundle = Bundle()
                     bundle.putLong("timer", (SystemClock.elapsedRealtime() - chronometer!!.base))
                     fragment = FragmentNewRun()
-                    fragment.setArguments(bundle);
+                    fragment.setArguments(bundle)
                 }else{
                     fragment = FragmentHome()
                 }
@@ -130,6 +130,9 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                 val runs = db.runDao().getAll()
                 if(runs != null) {
                     fragment.listAdapter = RunListAdapter(this, runs)
+                    val bundle = Bundle()
+                    bundle.putDouble("totalKm", getAllKm())
+                    fragment.setArguments(bundle);
                 }else{
                     Log.d("DEBUG", "ListViewRuns == null: "+runs.toString())
                     Toast.makeText(this@MainActivity, "ListViewRuns == null: "+runs.toString(), Toast.LENGTH_SHORT).show()
@@ -146,6 +149,22 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
             }
         }
         false
+    }
+
+    //get all km from the user
+    fun getAllKm(): Double {
+        val db = RunDB.get(this)
+        val runs = db.runDao().getAll()
+        var totalKm = 0.0
+        for (run in runs){
+            if(!run.km.equals("Km")){
+                Log.d("DEBUG_main", java.lang.Double.valueOf(run.km).toString())
+                totalKm += java.lang.Double.valueOf(run.km)
+            }else{
+                Log.d("DEBUG_main", run.km)
+            }
+        }
+        return totalKm
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -195,7 +214,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         }
         val c = Calendar.getInstance()
         val date = c.get(Calendar.DATE).toString()+"."+c.get(Calendar.MONTH).toString()+"."+c.get(Calendar.YEAR).toString()
-        db.runDao().insert(Run(runID,  time, "0", date))
+        db.runDao().insert(Run(runID,  time, "0.0", date))
         runID = runID +1
         chronometer!!.setBase(SystemClock.elapsedRealtime())
         chronometer!!.stop()

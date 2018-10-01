@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_myruns.*
 
@@ -34,6 +35,14 @@ class FragmentMyRuns: ListFragment() {
                 activityCallBack!!.onSwipeRightMyRuns()
             }
         })
+
+        if (getArguments() != null) {
+            val totalKm = getArguments()!!.getDouble("totalKm")
+            val totalKm_view = rootView.findViewById<TextView>(R.id.totalKm) as TextView
+            totalKm_view.text = "total km: "+totalKm.toString()+" km"
+            val totalTime_view = rootView.findViewById<TextView>(R.id.totalTime) as TextView
+            totalTime_view.text = "total time: "
+        }
 
         return rootView
     }
