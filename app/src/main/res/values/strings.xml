@@ -26,4 +26,5 @@
         - Connected devices are shown on the list with ***.\n
         - Clicking on connected device will show device info.\n
         - Long click on connected device will disconnect.</string>
+    <string name="title_runDetails">details</string>
 </resources>

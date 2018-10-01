@@ -120,6 +120,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                 }else{
                     fragment = FragmentHome()
                 }
+                getSupportActionBar()!!.setTitle(R.string.title_home)
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
@@ -134,10 +135,12 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                     Toast.makeText(this@MainActivity, "ListViewRuns == null: "+runs.toString(), Toast.LENGTH_SHORT).show()
                 }
 
+                getSupportActionBar()!!.setTitle(R.string.title_myRunns)
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_settings -> {
+                getSupportActionBar()!!.setTitle(R.string.title_setting)
                 addFragment(FragmentSettings())
                 return@OnNavigationItemSelectedListener true
             }
@@ -149,6 +152,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         super.onCreate(savedInstanceState)
         setNewTheme()
         setContentView(R.layout.activity_main)
+        getSupportActionBar()!!.setTitle(R.string.title_home)
 
         content = findViewById<FrameLayout>(R.id.fragment_container) as FrameLayout
         navigation = findViewById<BottomNavigationView>(R.id.navigation) as BottomNavigationView
@@ -234,6 +238,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         bundle.putStringArray("details", array)
         var fragment = FragmentRunDetails()
         fragment.setArguments(bundle)
+        getSupportActionBar()!!.setTitle(R.string.title_runDetails)
         addFragment(fragment)
     }
 
