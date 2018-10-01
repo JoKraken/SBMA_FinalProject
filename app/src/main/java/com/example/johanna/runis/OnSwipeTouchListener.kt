@@ -1,5 +1,8 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.johanna.runis
 
+import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -8,7 +11,7 @@ open class OnSwipeTouchListener: View.OnTouchListener {
 
     private val gestureDetector = GestureDetector(GestureListener())
 
-    fun onTouch(event: MotionEvent): Boolean {
+    fun onTouch(event: MotionEvent?): Boolean {
         return gestureDetector.onTouchEvent(event)
     }
 
@@ -51,8 +54,11 @@ open class OnSwipeTouchListener: View.OnTouchListener {
         }
     }
 
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
-        return gestureDetector.onTouchEvent(event)
+    override fun onTouch(v: View, event: MotionEvent?): Boolean {
+        Log.d("DEBUG", v.toString())
+        Log.d("DEBUG", event.toString())
+        val bool = gestureDetector.onTouchEvent(event)
+        return bool
     }
 
     open fun onSwipeRight() {}

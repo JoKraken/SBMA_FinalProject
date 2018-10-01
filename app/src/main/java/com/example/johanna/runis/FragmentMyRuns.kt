@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.johanna.runis
 
 import android.os.Bundle
@@ -12,7 +10,6 @@ import android.widget.ListView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_myruns.*
 
-@Suppress("UNREACHABLE_CODE", "DEPRECATION")
 class FragmentMyRuns: ListFragment() {
     internal var activityCallBack: FragmentMyRunsListener? = null
 
