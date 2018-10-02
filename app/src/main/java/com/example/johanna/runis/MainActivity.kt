@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
             @PrimaryKey val runid: Int,
             val time: String, //time in minutes
             val km: String,
-            val date: String
+            val date: String,
+            val date_base: Long
     ) {
         //constructor, getter and setter are implicit :)
         override fun toString(): String{
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         fun getUserRuns(runid: Int): List<Run>
     }
 
-    @Database(entities = [(Run::class), (RunDetails::class)], version = 1)
+    @Database(entities = [(Run::class), (RunDetails::class)], version = 2)
     abstract class RunDB: RoomDatabase() {
         abstract fun runDetailsDao(): RunDetailsDao
         abstract fun runDao(): RunDao
@@ -146,6 +147,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                 if(runs != null) {
                     fragment.listAdapter = RunListAdapter(this, runs)
                     val bundle = Bundle()
+                    bundle.putString("totalTime", timeToString(getTotalTime()))
                     bundle.putDouble("totalKm", getAllKm())
                     fragment.setArguments(bundle);
                 }else{
@@ -166,6 +168,22 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         false
     }
 
+    //get total time from the user
+    fun getTotalTime(): Long {
+        val db = RunDB.get(this)
+        val runs = db.runDao().getAll()
+        var totalTime = runs[0].date_base
+        for (run in runs){
+            if(run.date_base != totalTime){
+                Log.d("DEBUG_main", run.date_base.toString())
+                totalTime += run.date_base
+            }else{
+                Log.d("DEBUG_main", run.km)
+            }
+        }
+        return totalTime
+    }
+
     //get all km from the user
     fun getAllKm(): Double {
         val db = RunDB.get(this)
@@ -182,6 +200,19 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         return totalKm
     }
 
+    fun timeToString(time: Long): String{
+        var timeString = ""
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(time)
+        val time2 = (time - (minutes*60000))
+        val secounds = TimeUnit.MILLISECONDS.toSeconds(time2)
+        if(secounds < 10){
+            timeString = minutes.toString()+":0"+secounds
+        }else{
+            timeString = minutes.toString()+":"+secounds
+        }
+        return timeString
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setNewTheme()
@@ -193,7 +224,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         navigation!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         val db = RunDB.get(this)
-        db.runDao().insert(Run(0, "Time", "Km","Date"))
+        db.runDao().insert(Run(0, "Time", "Km","Date", 0))
 
         var fragment = Fragment()
         if(runID == 1){
@@ -224,17 +255,10 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         newRun = false
 
         val db = RunDB.get(this)
-        var time = ""
-        val minutes = TimeUnit.MILLISECONDS.toMinutes((SystemClock.elapsedRealtime()-chronometer!!.base))
-        val secounds = TimeUnit.MILLISECONDS.toSeconds((SystemClock.elapsedRealtime()-chronometer!!.base))
-        if(secounds < 10){
-            time = minutes.toString()+":0"+secounds
-        }else{
-            time = minutes.toString()+":"+secounds
-        }
+        var time = timeToString((SystemClock.elapsedRealtime()-chronometer!!.base))
         val c = Calendar.getInstance()
         val date = c.get(Calendar.DATE).toString()+"."+c.get(Calendar.MONTH).toString()+"."+c.get(Calendar.YEAR).toString()
-        db.runDao().insert(Run(runID,  time, "0.0", date))
+        db.runDao().insert(Run(runID,  time, "0.0", date, (SystemClock.elapsedRealtime()-chronometer!!.base)))
         runID = runID +1
         chronometer!!.setBase(SystemClock.elapsedRealtime())
         chronometer!!.stop()
@@ -301,6 +325,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
     //function for swipen the menu
     override fun onSwipeLeftNewRun(time: Long) {
         timer = time
+        Log.d("DEBUG_main", time.toString())
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
 

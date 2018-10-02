@@ -42,8 +42,9 @@ class  FragmentNewRun: Fragment() {
 
         var time = 0
         if (getArguments() != null) {
+            Log.d("DEBUG_newRun", getArguments()!!.getLong("timer").toString())
             time = getArguments()!!.getLong("timer").toInt()
-            Log.d("DEBUG", time.toString())
+            Log.d("DEBUG_newRun", time.toString())
         }
 
         chronometer = rootView.findViewById(R.id.chronometer)
