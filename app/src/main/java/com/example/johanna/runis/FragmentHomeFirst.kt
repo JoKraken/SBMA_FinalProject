@@ -10,33 +10,33 @@ import android.support.design.widget.FloatingActionButton
 import android.widget.TextView
 
 
-class FragmentHome : Fragment() {
-    internal var activityCallBack: FragmentHomeListener? = null
+class FragmentHomeFirst : Fragment() {
+    internal var activityCallBack: FragmentHomeFirstListener? = null
 
-    interface FragmentHomeListener {
-        fun onSwipeLeftHome()
-        fun newRun()
-        fun connectBT()
+    interface FragmentHomeFirstListener {
+        fun onSwipeLeftHomeFirst()
+        fun newRunFirst()
+        fun connectBTFirst()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView : View? = inflater!!.inflate(R.layout.fragment_home, container, false)
-        activityCallBack = context as FragmentHomeListener
+        var rootView : View? = inflater!!.inflate(R.layout.fragment_home_first, container, false)
+        activityCallBack = context as FragmentHomeFirstListener
 
         rootView!!.setOnTouchListener(object : OnSwipeTouchListener() {
             override fun onSwipeLeft() {
                 Log.e("ViewSwipe", "Home Left")
-                activityCallBack!!.onSwipeLeftHome()
+                activityCallBack!!.onSwipeLeftHomeFirst()
             }
         })
 
         val add = rootView.findViewById<FloatingActionButton>(R.id.add)
         val bt = rootView.findViewById<FloatingActionButton>(R.id.startBlueTooth)
         add.setOnClickListener {
-            activityCallBack!!.newRun()
+            activityCallBack!!.newRunFirst()
         }
         bt.setOnClickListener {
-            activityCallBack!!.connectBT()
+            activityCallBack!!.connectBTFirst()
         }
 
         return rootView

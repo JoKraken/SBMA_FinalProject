@@ -19,7 +19,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
+class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener, FragmentHomeFirst.FragmentHomeFirstListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
 
 
     @Entity
@@ -112,13 +112,28 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         when (item.itemId) {
             R.id.navigation_home -> {
                 var fragment = Fragment()
+                val bundle = Bundle()
                 if(newRun) {
-                    val bundle = Bundle()
                     bundle.putLong("timer", (SystemClock.elapsedRealtime() - chronometer!!.base))
                     fragment = FragmentNewRun()
                     fragment.setArguments(bundle)
                 }else{
-                    fragment = FragmentHome()
+                    Log.d("DEBUG_main", "newRun false")
+                    val db = RunDB.get(this)
+                    Log.d("DEBUG_main", db.runDao().getAll().size.toString())
+                    if(runID != 1){
+                        Log.d("DEBUG_main", "size != 0")
+                        val run = db.runDao().getAll()[db.runDao().getAll().size-1]
+                        var array = Array<String>(5){""}
+                        array[0] = run.date
+                        array[1] = run.km
+                        array[2] = run.time
+                        bundle.putStringArray("details", array)
+                        fragment = FragmentHome()
+                    }else{
+                        fragment = FragmentHomeFirst()
+                    }
+
                 }
                 getSupportActionBar()!!.setTitle(R.string.title_home)
                 addFragment(fragment)
@@ -180,7 +195,12 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         val db = RunDB.get(this)
         db.runDao().insert(Run(0, "Time", "Km","Date"))
 
-        val fragment = FragmentHome()
+        var fragment = Fragment()
+        if(runID == 1){
+            fragment = FragmentHomeFirst()
+        }else{
+            fragment = FragmentHome()
+        }
         supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit()
 
     }
@@ -232,8 +252,16 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         val fragment = FragmentNewRun()
         addFragment(fragment)
     }
+    override fun newRunFirst() {
+        newRun()
+    }
 
     override fun connectBT(){
+        val fragment = BluetoothFragment()
+        addFragment(fragment)
+    }
+
+    override fun connectBTFirst(){
         val fragment = BluetoothFragment()
         addFragment(fragment)
     }
@@ -273,6 +301,10 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
     //function for swipen the menu
     override fun onSwipeLeftNewRun(time: Long) {
         timer = time
+        navigation!!.selectedItemId = R.id.navigation_myRunns
+    }
+
+    override fun onSwipeLeftHomeFirst() {
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
 

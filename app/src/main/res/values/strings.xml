@@ -27,4 +27,10 @@
         - Clicking on connected device will show device info.\n
         - Long click on connected device will disconnect.</string>
     <string name="title_runDetails">Rundetails</string>
+    <string name="title_home_first">Welcome to Runnis!</string>
+    <string name="title_home_first_text">You can follow daily running with this app.\n
+        You can track your route via GPS and the heartbeat via an external sensor.\n
+        You can watch this at MyRuns.\n
+        You can also make predictions about the next run.\n</string>
+
 </resources>
