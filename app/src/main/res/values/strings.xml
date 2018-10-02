@@ -31,6 +31,10 @@
     <string name="title_home_first_text">You can follow daily running with this app.\n
         You can track your route via GPS and the heartbeat via an external sensor.\n
         You can watch this at MyRuns.\n
-        You can also make predictions about the next run.\n</string>
+        You can also make predictions about the next run.\n
+        If you do not want that the app know your GPS position or use Bluetooth, you can prohibit this under Settings.\n
+        Please also enter a name under Settings.\n</string>
+    <string name="title_home_headline">Hello</string>
+    <string name="title_home_text">Here you can see details about the last run:</string>
 
 </resources>
