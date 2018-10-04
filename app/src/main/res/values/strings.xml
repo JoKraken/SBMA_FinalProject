@@ -43,5 +43,7 @@
     <string name="home_minutes"> minutes</string>
     <string name="myruns_km_total">total km: </string>
     <string name="myruns_time_total">total time: </string>
+    <string name="runDetails">To delete this run, please click on the button in the left down corner.</string>
+    <string name="delete_Toast">The run is deteled</string>
 
 </resources>

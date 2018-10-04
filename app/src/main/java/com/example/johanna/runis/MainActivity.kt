@@ -22,7 +22,7 @@ import android.arch.persistence.room.Delete
 
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener, FragmentHomeFirst.FragmentHomeFirstListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
+class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsListener, FragmentNewRun.FragmentNewRunListener, FragmentHomeFirst.FragmentHomeFirstListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
 
 
     @Entity
@@ -76,6 +76,10 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         @Delete
         fun delete(run: Run)
 
+        @Query("SELECT * FROM run " +
+                "WHERE runid = :id LIMIT 1")
+        fun getRunByd(id: Int): Run
+
         @Query("SELECT * FROM runDetails " +
                 "INNER JOIN run " +
                 "ON runDetails.run = run.runid " +
@@ -83,7 +87,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         fun getUserRuns(runid: Int): List<Run>
     }
 
-    @Database(entities = [(Run::class), (RunDetails::class)], version = 2)
+    @Database(entities = [(Run::class), (RunDetails::class)], version = 3)
     abstract class RunDB: RoomDatabase() {
         abstract fun runDetailsDao(): RunDetailsDao
         abstract fun runDao(): RunDao
@@ -166,7 +170,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         val bundle = Bundle()
         val db = RunDB.get(this)
         Log.d("DEBUG_main", db.runDao().getAll().size.toString())
-        if(runID != 1){
+        if(db.runDao().getAll().size > 1){
             Log.d("DEBUG_main", "size != 0")
             val run = db.runDao().getAll()[db.runDao().getAll().size-1]
             var array = Array<String>(5){""}
@@ -316,6 +320,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         array[0] = run.date
         array[1] = run.km
         array[2] = run.time
+        array[3] = run.runid.toString()
         bundle.putStringArray("details", array)
         var fragment = FragmentRunDetails()
         fragment.setArguments(bundle)
@@ -333,6 +338,17 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         user[0] = gps.toString()
         user[1] = bluetooth.toString()
         user[2] = name
+    }
+
+    //delete Run
+    override fun deleteRun(id: Int){
+        Log.d("DEBUG_main", "delete")
+        val db = RunDB.get(this)
+        val run = db.runDao().getRunByd(id)
+        Log.d("DEBUG_main", run.toString())
+        db.runDao().delete(run)
+        Toast.makeText(this@MainActivity, getString(R.string.delete_Toast), Toast.LENGTH_SHORT).show()
+        navigation!!.selectedItemId = R.id.navigation_myRunns
     }
 
     //function for swipen the menu
