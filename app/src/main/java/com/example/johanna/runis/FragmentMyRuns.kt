@@ -47,9 +47,12 @@ class FragmentMyRuns: ListFragment() {
 
         return rootView
     }
+    
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
-        super.onListItemClick(l, v, position, id)
-        activityCallBack!!.onListClick(position)
+        if(position!= 0){
+            super.onListItemClick(l, v, position, id)
+            activityCallBack!!.onListClick(position)
+        }
     }
 
 }

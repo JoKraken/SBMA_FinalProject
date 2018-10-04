@@ -126,6 +126,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
                 var fragment = Fragment()
                 val bundle = Bundle()
                 if(newRun) {
+                    Log.d("DEBUG_main_newRun", chronometer!!.base.toString())
                     bundle.putLong("timer", (SystemClock.elapsedRealtime() - chronometer!!.base))
                     fragment = FragmentNewRun()
                     fragment.setArguments(bundle)
@@ -244,6 +245,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
 
         val db = RunDB.get(this)
         db.runDao().insert(Run(0, "Time", "Km","Date", 0))
+        runID = db.runDao().getAll().size
 
         val fragment = getHomeFragment()
         supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit()
@@ -307,6 +309,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
     fun startChronometer() {
         if (!newRun) {
             chronometer!!.start()
+            Log.d("DEBUG_main_startChrono", chronometer!!.base.toString())
             newRun = true
         }
     }
@@ -352,9 +355,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
     }
 
     //function for swipen the menu
-    override fun onSwipeLeftNewRun(time: Long) {
-        timer = time
-        Log.d("DEBUG_main", time.toString())
+    override fun onSwipeLeftNewRun() {
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
 

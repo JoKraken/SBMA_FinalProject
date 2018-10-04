@@ -18,7 +18,7 @@ class  FragmentNewRun: Fragment() {
     private var running: Boolean = false
 
     interface FragmentNewRunListener {
-        fun onSwipeLeftNewRun(base: Long)
+        fun onSwipeLeftNewRun()
         fun endRun(time: Long)
     }
 
@@ -29,7 +29,7 @@ class  FragmentNewRun: Fragment() {
         rootView.setOnTouchListener(object : OnSwipeTouchListener() {
             override fun onSwipeLeft() {
                 Log.e("ViewSwipe", "Home Left")
-                activityCallBack!!.onSwipeLeftNewRun(chronometer!!.base)
+                activityCallBack!!.onSwipeLeftNewRun()
                 pauseChronometer()
             }
         })
