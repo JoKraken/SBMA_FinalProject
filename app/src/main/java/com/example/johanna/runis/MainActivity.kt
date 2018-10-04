@@ -8,13 +8,11 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener
 import android.support.v4.app.Fragment
-import android.support.v4.math.MathUtils
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Chronometer
 import android.widget.FrameLayout
 import android.widget.Toast
-import com.example.johanna.runis.R.id.fragment_container
 import java.util.*
 import java.util.concurrent.TimeUnit
 import android.arch.persistence.room.Delete
@@ -307,16 +305,16 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
     }
 
     fun startChronometer() {
-        if (!newRun) {
-            chronometer!!.start()
-            Log.d("DEBUG_main_startChrono", chronometer!!.base.toString())
-            newRun = true
-        }
+        Log.d("DEBUG_main_startChrono",SystemClock.elapsedRealtime().toString())
+        chronometer!!.setBase(SystemClock.elapsedRealtime())
+        chronometer!!.start()
+        Log.d("DEBUG_main_startChrono", chronometer!!.base.toString())
+        newRun = true
     }
 
     //create rundetails fragment and put the information in bundle
     override fun onListClick(position: Int){
-        val db = RunDB.get(this)
+        val db = MainActivity.RunDB.get(this)
         val run = db.runDao().getAll()[position]
         val bundle = Bundle()
         var array = Array<String>(5){""}
