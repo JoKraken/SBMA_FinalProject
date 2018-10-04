@@ -4,23 +4,51 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewDashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:id="@+id/last_km3"
+        android:layout_width="116dp"
+        android:layout_height="37dp"
+        android:layout_above="@+id/totalTime"
+        android:layout_marginBottom="-73dp"
+        android:layout_marginLeft="24dp"
+        android:text="@string/myruns_km_total"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/totalKm"
+        android:layout_width="186dp"
+        android:layout_height="36dp"
+        android:layout_above="@+id/totalTime"
+        android:layout_marginBottom="-73dp"
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@+id/last_km3"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/last_time3"
+        android:layout_width="118dp"
+        android:layout_height="37dp"
+        android:layout_alignTop="@+id/totalTime"
+        android:layout_marginLeft="24dp"
+        android:text="@string/myruns_time_total"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/totalTime"
+        android:layout_width="188dp"
+        android:layout_height="38dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="21dp"
-        android:drawableTop="@drawable/ic_dashboard_black_24dp"
-        android:gravity="center_horizontal"
-        android:text="@string/title_myRunns"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+        android:layout_marginEnd="54dp"
+        android:layout_marginTop="73dp"
+        android:textSize="18sp" />
 
     <ListView
         android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="422dp"
+        android:layout_width="304dp"
+        android:layout_height="362dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="145dp" />
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="139dp" />
 
 </RelativeLayout>

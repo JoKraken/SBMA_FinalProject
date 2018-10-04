@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.johanna.runis
 
 import android.os.Bundle
@@ -9,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_myruns.*
 
-@Suppress("UNREACHABLE_CODE", "DEPRECATION")
 class FragmentMyRuns: ListFragment() {
     internal var activityCallBack: FragmentMyRunsListener? = null
 
@@ -38,11 +36,23 @@ class FragmentMyRuns: ListFragment() {
             }
         })
 
+        if (getArguments() != null) {
+            val totalKm = getArguments()!!.getDouble("totalKm")
+            val totalKm_view = rootView.findViewById<TextView>(R.id.totalKm) as TextView
+            totalKm_view.text = totalKm.toString()+" "+getString(R.string.home_km)
+            val totalTime_view = rootView.findViewById<TextView>(R.id.totalTime) as TextView
+            val totalTime = getArguments()!!.getString("totalTime")
+            totalTime_view.text = totalTime+" "+getString(R.string.home_minutes)
+        }
+
         return rootView
     }
+    
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
-        super.onListItemClick(l, v, position, id)
-        activityCallBack!!.onListClick(position)
+        if(position!= 0){
+            super.onListItemClick(l, v, position, id)
+            activityCallBack!!.onListClick(position)
+        }
     }
 
 }
