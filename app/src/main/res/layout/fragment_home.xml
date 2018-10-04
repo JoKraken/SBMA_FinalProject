@@ -6,10 +6,11 @@
 
     <TextView
         android:id="@+id/txtheadline"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="35dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="43dp"
         android:gravity="center_horizontal"
         android:text="@string/title_home_headline"
@@ -17,13 +18,72 @@
 
     <TextView
         android:id="@+id/txttext"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_width="312dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="119dp"
         android:gravity="center_horizontal"
         android:text="@string/title_home_text"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/last_date"
+        android:layout_width="182dp"
+        android:layout_height="37dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="197dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/last_km"
+        android:layout_width="116dp"
+        android:layout_height="37dp"
+        android:layout_alignStart="@+id/last_date"
+        android:layout_below="@+id/last_date"
+        android:text="@string/home_last_km"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/last_km2"
+        android:layout_width="158dp"
+        android:layout_height="37dp"
+        android:layout_alignEnd="@+id/startBlueTooth"
+        android:layout_alignTop="@+id/last_km"
+        android:layout_marginEnd="-42dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/last_time"
+        android:layout_width="114dp"
+        android:layout_height="37dp"
+        android:layout_alignStart="@+id/last_date"
+        android:layout_below="@+id/last_km"
+        android:text="@string/home_last_time"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/last_time2"
+        android:layout_width="156dp"
+        android:layout_height="37dp"
+        android:layout_alignEnd="@+id/startBlueTooth"
+        android:layout_alignTop="@+id/last_time"
+        android:layout_marginEnd="-42dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/moreInfo"
+        android:layout_width="312dp"
+        android:layout_height="88dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="135dp"
+        android:layout_marginStart="28dp"
+        android:text="@string/home_moreInfo"
         android:textSize="18sp" />
 
     <android.support.design.widget.FloatingActionButton

@@ -17,6 +17,9 @@ import android.widget.Toast
 import com.example.johanna.runis.R.id.fragment_container
 import java.util.*
 import java.util.concurrent.TimeUnit
+import android.arch.persistence.room.Delete
+
+
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener, FragmentHomeFirst.FragmentHomeFirstListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
 
     @Dao
     interface RunDetailsDao {
-        @Query("SELECT * FROM runDetails")
+        @Query("SELECT * FROM runDetails ")
         fun getAll(): List<RunDetails>
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -70,6 +73,9 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         @Update
         fun update(run: Run)
 
+        @Delete
+        fun delete(run: Run)
+
         @Query("SELECT * FROM runDetails " +
                 "INNER JOIN run " +
                 "ON runDetails.run = run.runid " +
@@ -86,7 +92,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
             private var sInstance: RunDB? = null
             @Synchronized
             fun get(context: Context): RunDB {
-                Log.d("DEBUG", context.applicationContext.toString())
+                Log.d("DEBUG_main_database", context.applicationContext.toString())
                 if (sInstance == null) {
                     sInstance = Room.databaseBuilder(context.applicationContext, RunDB::class.java, "run.db")
                             .fallbackToDestructiveMigration()
@@ -108,6 +114,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
     private var newRun: Boolean = false
     private var chronometer: Chronometer? = null
     private var timer: Long = 0
+    private var user = Array<String>(3){""} //gps, bluetooth, name
 
     private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -120,21 +127,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                     fragment.setArguments(bundle)
                 }else{
                     Log.d("DEBUG_main", "newRun false")
-                    val db = RunDB.get(this)
-                    Log.d("DEBUG_main", db.runDao().getAll().size.toString())
-                    if(runID != 1){
-                        Log.d("DEBUG_main", "size != 0")
-                        val run = db.runDao().getAll()[db.runDao().getAll().size-1]
-                        var array = Array<String>(5){""}
-                        array[0] = run.date
-                        array[1] = run.km
-                        array[2] = run.time
-                        bundle.putStringArray("details", array)
-                        fragment = FragmentHome()
-                    }else{
-                        fragment = FragmentHomeFirst()
-                    }
-
+                    fragment = getHomeFragment()
                 }
                 getSupportActionBar()!!.setTitle(R.string.title_home)
                 addFragment(fragment)
@@ -151,7 +144,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                     bundle.putDouble("totalKm", getAllKm())
                     fragment.setArguments(bundle);
                 }else{
-                    Log.d("DEBUG", "ListViewRuns == null: "+runs.toString())
+                    Log.d("DEBUG_main", "ListViewRuns == null: "+runs.toString())
                     Toast.makeText(this@MainActivity, "ListViewRuns == null: "+runs.toString(), Toast.LENGTH_SHORT).show()
                 }
 
@@ -166,6 +159,28 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
             }
         }
         false
+    }
+
+    fun getHomeFragment(): Fragment{
+        var fragment = Fragment()
+        val bundle = Bundle()
+        val db = RunDB.get(this)
+        Log.d("DEBUG_main", db.runDao().getAll().size.toString())
+        if(runID != 1){
+            Log.d("DEBUG_main", "size != 0")
+            val run = db.runDao().getAll()[db.runDao().getAll().size-1]
+            var array = Array<String>(5){""}
+            array[0] = run.date
+            array[1] = run.km
+            array[2] = run.time
+            array[3] = user[2]
+            bundle.putStringArray("details", array)
+            fragment = FragmentHome()
+            fragment.setArguments(bundle);
+        }else{
+            fragment = FragmentHomeFirst()
+        }
+        return fragment
     }
 
     //get total time from the user
@@ -226,12 +241,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         val db = RunDB.get(this)
         db.runDao().insert(Run(0, "Time", "Km","Date", 0))
 
-        var fragment = Fragment()
-        if(runID == 1){
-            fragment = FragmentHomeFirst()
-        }else{
-            fragment = FragmentHome()
-        }
+        val fragment = getHomeFragment()
         supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit()
 
     }
@@ -262,7 +272,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         runID = runID +1
         chronometer!!.setBase(SystemClock.elapsedRealtime())
         chronometer!!.stop()
-        val fragment = FragmentHome()
+        val fragment = getHomeFragment()
         addFragment(fragment)
     }
 
@@ -319,7 +329,10 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         val gps = prefManager.getBoolean("switch_gps", true)
         val bluetooth = prefManager.getBoolean("switch_bluetooth", true)
         val name = prefManager.getString("edit_name", "name")
-        Log.d("DEBUG", "gps: " + gps + ", bluetooth: "+bluetooth+ ", name: "+name)
+        Log.d("DEBUG_main", "gps: " + gps + ", bluetooth: "+bluetooth+ ", name: "+name)
+        user[0] = gps.toString()
+        user[1] = bluetooth.toString()
+        user[2] = name
     }
 
     //function for swipen the menu

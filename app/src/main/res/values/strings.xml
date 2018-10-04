@@ -36,5 +36,12 @@
         Please also enter a name under Settings.\n</string>
     <string name="title_home_headline">Hello</string>
     <string name="title_home_text">Here you can see details about the last run:</string>
+    <string name="home_last_time">time:</string>
+    <string name="home_last_km">distance:</string>
+    <string name="home_moreInfo">Please go to MyRuns and click on the first run to see more informations.</string>
+    <string name="home_km"> km</string>
+    <string name="home_minutes"> minutes</string>
+    <string name="myruns_km_total">total km: </string>
+    <string name="myruns_time_total">total time: </string>
 
 </resources>
