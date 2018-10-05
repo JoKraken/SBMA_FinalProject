@@ -1,4 +1,4 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.MyRuns
 
 import android.os.Bundle
 import android.support.v4.app.ListFragment
@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_myruns.*
+import com.example.johanna.runis.OnSwipeTouchListener
+import com.example.johanna.runis.R
 
 class FragmentMyRuns: ListFragment() {
     internal var activityCallBack: FragmentMyRunsListener? = null

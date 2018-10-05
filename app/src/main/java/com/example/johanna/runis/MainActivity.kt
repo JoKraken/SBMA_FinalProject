@@ -1,5 +1,6 @@
 package com.example.johanna.runis
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.SystemClock
 import android.preference.PreferenceManager
@@ -11,6 +12,13 @@ import android.util.Log
 import android.widget.Chronometer
 import android.widget.FrameLayout
 import android.widget.Toast
+import com.example.johanna.runis.Home.FragmentHome
+import com.example.johanna.runis.Home.FragmentHomeFirst
+import com.example.johanna.runis.Home.FragmentNewRun
+import com.example.johanna.runis.MyRuns.FragmentMyRuns
+import com.example.johanna.runis.MyRuns.FragmentRunDetails
+import com.example.johanna.runis.MyRuns.RunListAdapter
+import com.example.johanna.runis.Settings.FragmentSettings
 import java.util.*
 import java.util.concurrent.TimeUnit
 import com.example.johanna.runis.database.RunDB
@@ -151,6 +159,8 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         setContentView(R.layout.activity_main)
         getSupportActionBar()!!.setTitle(R.string.title_home)
 
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         content = findViewById<FrameLayout>(R.id.fragment_container) as FrameLayout
         navigation = findViewById<BottomNavigationView>(R.id.navigation) as BottomNavigationView
         navigation!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -175,7 +185,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
     }
 
     private fun addFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
     }
 
     //end run and stop chronometer

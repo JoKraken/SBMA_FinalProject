@@ -1,8 +1,7 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.Home
 
 import android.Manifest
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
@@ -21,8 +20,9 @@ import android.os.SystemClock
 import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.getSystemService
 import android.widget.Chronometer
+import com.example.johanna.runis.OnSwipeTouchListener
+import com.example.johanna.runis.R
 import kotlinx.android.synthetic.main.fragment_newrun.*
 import org.osmdroid.bonuspack.routing.OSRMRoadManager
 import org.osmdroid.bonuspack.routing.RoadManager
