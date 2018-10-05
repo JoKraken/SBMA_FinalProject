@@ -1,4 +1,4 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.database
 
 import android.arch.persistence.db.SupportSQLiteOpenHelper
 import android.arch.persistence.room.DatabaseConfiguration

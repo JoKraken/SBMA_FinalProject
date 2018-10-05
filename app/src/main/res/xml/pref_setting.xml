@@ -12,14 +12,14 @@
             android:key="switch_gps"
             android:title="@string/settings_gps"
             android:summary="@string/settings_gps_sum" />
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <!--<android.support.v7.preference.SwitchPreferenceCompat
             android:id="@+id/switchBluetooth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="true"
             android:key="switch_bluetooth"
             android:summary="@string/settings_bluetooth_sum"
-            android:title="@string/settings_bluetooth" />
+            android:title="@string/settings_bluetooth" />-->
     </PreferenceCategory>
 
     <PreferenceCategory
