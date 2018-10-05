@@ -21,7 +21,7 @@ class FragmentSettings: PreferenceFragmentCompat(){
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateRecyclerView(inflater: LayoutInflater?, parent: ViewGroup?, savedInstanceState: Bundle?): RecyclerView {
         Log.d("DEBUG", "onCreateRecyclerView")
-        var rootView =  super.onCreateRecyclerView(inflater, parent, savedInstanceState)
+        val rootView =  super.onCreateRecyclerView(inflater, parent, savedInstanceState)
         activityCallBack = context as FragmentSettingsListener
 
         rootView.setOnTouchListener(object : OnSwipeTouchListener() {
