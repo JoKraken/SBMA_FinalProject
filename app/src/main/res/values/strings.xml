@@ -13,7 +13,7 @@
     <string name="settings_headline2">Change Name</string>
     <string name="settings_name">Name</string>
     <string name="settings_headline3">Change Theme</string>
-    <string name="settings_headline3_sum">To change the Theme you have to start the App afterwards again</string>
+    <string name="settings_headline3_sum">To change the Theme you have to restart the App afterwards</string>
     <string name="settings_name_sum">To change your name please click here</string>
     <string name="bt_title_start">Ready to connect</string>
     <string name="bt_title_connecting">Connecting...</string>
@@ -26,24 +26,24 @@
         - Connected devices are shown on the list with ***.\n
         - Clicking on connected device will show device info.\n
         - Long click on connected device will disconnect.</string>
-    <string name="title_runDetails">Rundetails</string>
+    <string name="title_runDetails">Run Details</string>
     <string name="title_home_first">Welcome to Runnis!</string>
-    <string name="title_home_first_text">You can follow daily running with this app.\n
+    <string name="title_home_first_text">You can track your runs daily with this app.\n
         You can track your route via GPS and the heartbeat via an external sensor.\n
-        You can watch this at MyRuns.\n
+        You can review this at My Runs.\n
         You can also make predictions about the next run.\n
-        If you do not want that the app know your GPS position or use Bluetooth, you can prohibit this under Settings.\n
+        If you do not want the app to use your GPS location or Bluetooth, you can prohibit this under Settings.\n
         Please also enter a name under Settings.\n</string>
     <string name="title_home_headline">Hello</string>
     <string name="title_home_text">Here you can see details about the last run:</string>
     <string name="home_last_time">time:</string>
     <string name="home_last_km">distance:</string>
-    <string name="home_moreInfo">Please go to MyRuns and click on the first run to see more informations.</string>
+    <string name="home_moreInfo">Please go to My Runs and click on the first run to see more information.</string>
     <string name="home_km"> km</string>
     <string name="home_minutes"> minutes</string>
     <string name="myruns_km_total">total km: </string>
     <string name="myruns_time_total">total time: </string>
-    <string name="runDetails">To delete this run, please click on the button in the left down corner.</string>
-    <string name="delete_Toast">The run is deteled</string>
+    <string name="runDetails">To delete this run, please click on the button in the bottom left corner.</string>
+    <string name="delete_Toast">The run has been deleted</string>
 
 </resources>

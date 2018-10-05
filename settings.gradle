@@ -1,1 +1,1 @@
-include ':app', ':mdslib-1.13.0-release'
+include ':app', ':mdslib-1.13.0-release', ':osmbonuspack_6.5.2'
