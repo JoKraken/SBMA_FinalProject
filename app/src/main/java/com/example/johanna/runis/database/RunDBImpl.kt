@@ -3,10 +3,13 @@ package com.example.johanna.runis
 import android.arch.persistence.db.SupportSQLiteOpenHelper
 import android.arch.persistence.room.DatabaseConfiguration
 import android.arch.persistence.room.InvalidationTracker
+import com.example.johanna.runis.database.RunDB
+import com.example.johanna.runis.database.daos.RunDao
+import com.example.johanna.runis.database.daos.RunDetailsDao
 
-class RunDBImpl : MainActivity.RunDB() {
+class RunDBImpl : RunDB() {
 
-    override fun runDetailsDao(): MainActivity.RunDetailsDao {
+    override fun runDetailsDao(): RunDetailsDao {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -22,7 +25,7 @@ class RunDBImpl : MainActivity.RunDB() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun runDao(): MainActivity.RunDao {
+    override fun runDao(): RunDao {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

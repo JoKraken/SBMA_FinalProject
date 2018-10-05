@@ -1,7 +1,5 @@
 package com.example.johanna.runis
 
-import android.arch.persistence.room.*
-import android.content.Context
 import android.os.Bundle
 import android.os.SystemClock
 import android.preference.PreferenceManager
@@ -15,96 +13,12 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import java.util.*
 import java.util.concurrent.TimeUnit
-import android.arch.persistence.room.Delete
-
+import com.example.johanna.runis.database.RunDB
+import com.example.johanna.runis.database.entities.Run
 
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsListener, FragmentNewRun.FragmentNewRunListener, FragmentHomeFirst.FragmentHomeFirstListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
-
-
-    @Entity
-    data class Run(
-            @PrimaryKey val runid: Int,
-            val time: String, //time in minutes
-            val km: String,
-            val date: String,
-            val date_base: Long
-    ) {
-        //constructor, getter and setter are implicit :)
-        override fun toString(): String{
-            return "$runid:  $date, $time, $km"
-        }
-    }
-
-    @Entity(foreignKeys = [(ForeignKey(
-            entity = Run::class,
-            parentColumns = ["runid"],
-            childColumns = ["run"]))])
-    data class RunDetails(
-            val run: Int,
-            val type: Int, //e.g. 1 = position, 2 = heartbeat
-            @PrimaryKey
-            val value: String
-    ){
-        //constructor, getter and setter are implicit :)
-        override fun toString(): String = "$run:   $type:   $value"
-    }
-
-    @Dao
-    interface RunDetailsDao {
-        @Query("SELECT * FROM runDetails ")
-        fun getAll(): List<RunDetails>
-
-        @Insert(onConflict = OnConflictStrategy.REPLACE)
-        fun insert(runDetail: RunDetails)
-    }
-
-    @Dao
-    interface RunDao {
-        @Query("SELECT * FROM run")
-        fun getAll(): List<Run>
-
-        @Insert(onConflict = OnConflictStrategy.REPLACE)
-        fun insert(run: Run)
-
-        @Update
-        fun update(run: Run)
-
-        @Delete
-        fun delete(run: Run)
-
-        @Query("SELECT * FROM run " +
-                "WHERE runid = :id LIMIT 1")
-        fun getRunByd(id: Int): Run
-
-        @Query("SELECT * FROM runDetails " +
-                "INNER JOIN run " +
-                "ON runDetails.run = run.runid " +
-                "WHERE runDetails.run = :runid")
-        fun getUserRuns(runid: Int): List<Run>
-    }
-
-    @Database(entities = [(Run::class), (RunDetails::class)], version = 3)
-    abstract class RunDB: RoomDatabase() {
-        abstract fun runDetailsDao(): RunDetailsDao
-        abstract fun runDao(): RunDao
-        /* one and only one instance */
-        companion object {
-            private var sInstance: RunDB? = null
-            @Synchronized
-            fun get(context: Context): RunDB {
-                Log.d("DEBUG_main_database", context.applicationContext.toString())
-                if (sInstance == null) {
-                    sInstance = Room.databaseBuilder(context.applicationContext, RunDB::class.java, "run.db")
-                            .fallbackToDestructiveMigration()
-                            .allowMainThreadQueries()
-                            .build()
-                }
-                return sInstance!!
-            }
-        }
-    }
 
     private var content: FrameLayout? = null
     private var navigation: BottomNavigationView? = null
@@ -314,7 +228,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
 
     //create rundetails fragment and put the information in bundle
     override fun onListClick(position: Int){
-        val db = MainActivity.RunDB.get(this)
+        val db = RunDB.get(this)
         val run = db.runDao().getAll()[position]
         val bundle = Bundle()
         var array = Array<String>(5){""}
@@ -333,11 +247,11 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
     override fun stopPreference() {
         val prefManager = PreferenceManager.getDefaultSharedPreferences(this)
         val gps = prefManager.getBoolean("switch_gps", true)
-        val bluetooth = prefManager.getBoolean("switch_bluetooth", true)
+        //val bluetooth = prefManager.getBoolean("switch_bluetooth", true)
         val name = prefManager.getString("edit_name", "name")
-        Log.d("DEBUG_main", "gps: " + gps + ", bluetooth: "+bluetooth+ ", name: "+name)
+        Log.d("DEBUG_main", "gps: " + gps + ", name: "+name)
         user[0] = gps.toString()
-        user[1] = bluetooth.toString()
+        //user[1] = bluetooth.toString()
         user[2] = name
     }
 
