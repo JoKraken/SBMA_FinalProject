@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/mdslib-1.13.0-release" />
+            <option value="$PROJECT_DIR$/osmbonuspack_6.5.2" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
