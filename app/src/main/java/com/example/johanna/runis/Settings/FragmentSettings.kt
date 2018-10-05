@@ -1,4 +1,4 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.Settings
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.support.v7.widget.RecyclerView
+import com.example.johanna.runis.OnSwipeTouchListener
+import com.example.johanna.runis.R
 
 
 class FragmentSettings: PreferenceFragmentCompat(){

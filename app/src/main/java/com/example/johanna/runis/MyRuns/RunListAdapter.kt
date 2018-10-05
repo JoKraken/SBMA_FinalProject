@@ -1,4 +1,4 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.MyRuns
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.johanna.runis.R
 import com.example.johanna.runis.database.entities.Run
 import kotlinx.android.synthetic.main.item_run.view.*
 

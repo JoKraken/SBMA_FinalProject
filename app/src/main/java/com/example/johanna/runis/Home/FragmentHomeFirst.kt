@@ -1,4 +1,4 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.Home
 
 import android.support.v4.app.Fragment
 import android.os.Bundle
@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.support.design.widget.FloatingActionButton
-import android.widget.TextView
+import com.example.johanna.runis.OnSwipeTouchListener
+import com.example.johanna.runis.R
 
 
 class FragmentHomeFirst : Fragment() {

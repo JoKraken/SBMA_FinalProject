@@ -1,4 +1,4 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.MyRuns
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.johanna.runis.R
 
 class FragmentRunDetails: Fragment() {
 
