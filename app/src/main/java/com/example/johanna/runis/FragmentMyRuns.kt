@@ -39,17 +39,20 @@ class FragmentMyRuns: ListFragment() {
         if (getArguments() != null) {
             val totalKm = getArguments()!!.getDouble("totalKm")
             val totalKm_view = rootView.findViewById<TextView>(R.id.totalKm) as TextView
-            totalKm_view.text = "total km: "+totalKm.toString()+" km"
+            totalKm_view.text = totalKm.toString()+" "+getString(R.string.home_km)
             val totalTime_view = rootView.findViewById<TextView>(R.id.totalTime) as TextView
             val totalTime = getArguments()!!.getString("totalTime")
-            totalTime_view.text = "total time: "+totalTime
+            totalTime_view.text = totalTime+" "+getString(R.string.home_minutes)
         }
 
         return rootView
     }
+    
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
-        super.onListItemClick(l, v, position, id)
-        activityCallBack!!.onListClick(position)
+        if(position!= 0){
+            super.onListItemClick(l, v, position, id)
+            activityCallBack!!.onListClick(position)
+        }
     }
 
 }

@@ -39,6 +39,18 @@ class FragmentHome : Fragment() {
             activityCallBack!!.connectBT()
         }
 
+        if(getArguments() != null){
+            val args = getArguments()!!.getStringArray("details")
+            val last_date = rootView.findViewById<TextView>(R.id.last_date) as TextView
+            last_date.text = args[0]
+            val last_km = rootView.findViewById<TextView>(R.id.last_km2) as TextView
+            last_km.text = args[1]+" "+getString(R.string.home_km)
+            val last_time = rootView.findViewById<TextView>(R.id.last_time2) as TextView
+            last_time.text = args[2]+" "+getString(R.string.home_minutes)
+            val headline = rootView.findViewById<TextView>(R.id.txtheadline) as TextView
+            headline.text = headline.text.toString()+" "+args[3]+","
+        }
+
         return rootView
     }
 

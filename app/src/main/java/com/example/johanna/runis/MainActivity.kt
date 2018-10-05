@@ -8,18 +8,19 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener
 import android.support.v4.app.Fragment
-import android.support.v4.math.MathUtils
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Chronometer
 import android.widget.FrameLayout
 import android.widget.Toast
-import com.example.johanna.runis.R.id.fragment_container
 import java.util.*
 import java.util.concurrent.TimeUnit
+import android.arch.persistence.room.Delete
+
+
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener, FragmentHomeFirst.FragmentHomeFirstListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
+class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsListener, FragmentNewRun.FragmentNewRunListener, FragmentHomeFirst.FragmentHomeFirstListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
 
 
     @Entity
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
 
     @Dao
     interface RunDetailsDao {
-        @Query("SELECT * FROM runDetails")
+        @Query("SELECT * FROM runDetails ")
         fun getAll(): List<RunDetails>
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -70,6 +71,13 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         @Update
         fun update(run: Run)
 
+        @Delete
+        fun delete(run: Run)
+
+        @Query("SELECT * FROM run " +
+                "WHERE runid = :id LIMIT 1")
+        fun getRunByd(id: Int): Run
+
         @Query("SELECT * FROM runDetails " +
                 "INNER JOIN run " +
                 "ON runDetails.run = run.runid " +
@@ -77,7 +85,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         fun getUserRuns(runid: Int): List<Run>
     }
 
-    @Database(entities = [(Run::class), (RunDetails::class)], version = 2)
+    @Database(entities = [(Run::class), (RunDetails::class)], version = 3)
     abstract class RunDB: RoomDatabase() {
         abstract fun runDetailsDao(): RunDetailsDao
         abstract fun runDao(): RunDao
@@ -86,7 +94,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
             private var sInstance: RunDB? = null
             @Synchronized
             fun get(context: Context): RunDB {
-                Log.d("DEBUG", context.applicationContext.toString())
+                Log.d("DEBUG_main_database", context.applicationContext.toString())
                 if (sInstance == null) {
                     sInstance = Room.databaseBuilder(context.applicationContext, RunDB::class.java, "run.db")
                             .fallbackToDestructiveMigration()
@@ -108,6 +116,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
     private var newRun: Boolean = false
     private var chronometer: Chronometer? = null
     private var timer: Long = 0
+    private var user = Array<String>(3){""} //gps, bluetooth, name
 
     private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -115,26 +124,13 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                 var fragment = Fragment()
                 val bundle = Bundle()
                 if(newRun) {
+                    Log.d("DEBUG_main_newRun", chronometer!!.base.toString())
                     bundle.putLong("timer", (SystemClock.elapsedRealtime() - chronometer!!.base))
                     fragment = FragmentNewRun()
                     fragment.setArguments(bundle)
                 }else{
                     Log.d("DEBUG_main", "newRun false")
-                    val db = RunDB.get(this)
-                    Log.d("DEBUG_main", db.runDao().getAll().size.toString())
-                    if(runID != 1){
-                        Log.d("DEBUG_main", "size != 0")
-                        val run = db.runDao().getAll()[db.runDao().getAll().size-1]
-                        var array = Array<String>(5){""}
-                        array[0] = run.date
-                        array[1] = run.km
-                        array[2] = run.time
-                        bundle.putStringArray("details", array)
-                        fragment = FragmentHome()
-                    }else{
-                        fragment = FragmentHomeFirst()
-                    }
-
+                    fragment = getHomeFragment()
                 }
                 getSupportActionBar()!!.setTitle(R.string.title_home)
                 addFragment(fragment)
@@ -151,7 +147,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
                     bundle.putDouble("totalKm", getAllKm())
                     fragment.setArguments(bundle);
                 }else{
-                    Log.d("DEBUG", "ListViewRuns == null: "+runs.toString())
+                    Log.d("DEBUG_main", "ListViewRuns == null: "+runs.toString())
                     Toast.makeText(this@MainActivity, "ListViewRuns == null: "+runs.toString(), Toast.LENGTH_SHORT).show()
                 }
 
@@ -166,6 +162,28 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
             }
         }
         false
+    }
+
+    fun getHomeFragment(): Fragment{
+        var fragment = Fragment()
+        val bundle = Bundle()
+        val db = RunDB.get(this)
+        Log.d("DEBUG_main", db.runDao().getAll().size.toString())
+        if(db.runDao().getAll().size > 1){
+            Log.d("DEBUG_main", "size != 0")
+            val run = db.runDao().getAll()[db.runDao().getAll().size-1]
+            var array = Array<String>(5){""}
+            array[0] = run.date
+            array[1] = run.km
+            array[2] = run.time
+            array[3] = user[2]
+            bundle.putStringArray("details", array)
+            fragment = FragmentHome()
+            fragment.setArguments(bundle);
+        }else{
+            fragment = FragmentHomeFirst()
+        }
+        return fragment
     }
 
     //get total time from the user
@@ -225,13 +243,9 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
 
         val db = RunDB.get(this)
         db.runDao().insert(Run(0, "Time", "Km","Date", 0))
+        runID = db.runDao().getAll().size
 
-        var fragment = Fragment()
-        if(runID == 1){
-            fragment = FragmentHomeFirst()
-        }else{
-            fragment = FragmentHome()
-        }
+        val fragment = getHomeFragment()
         supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit()
 
     }
@@ -262,7 +276,7 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         runID = runID +1
         chronometer!!.setBase(SystemClock.elapsedRealtime())
         chronometer!!.stop()
-        val fragment = FragmentHome()
+        val fragment = getHomeFragment()
         addFragment(fragment)
     }
 
@@ -291,21 +305,23 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
     }
 
     fun startChronometer() {
-        if (!newRun) {
-            chronometer!!.start()
-            newRun = true
-        }
+        Log.d("DEBUG_main_startChrono",SystemClock.elapsedRealtime().toString())
+        chronometer!!.setBase(SystemClock.elapsedRealtime())
+        chronometer!!.start()
+        Log.d("DEBUG_main_startChrono", chronometer!!.base.toString())
+        newRun = true
     }
 
     //create rundetails fragment and put the information in bundle
     override fun onListClick(position: Int){
-        val db = RunDB.get(this)
+        val db = MainActivity.RunDB.get(this)
         val run = db.runDao().getAll()[position]
         val bundle = Bundle()
         var array = Array<String>(5){""}
         array[0] = run.date
         array[1] = run.km
         array[2] = run.time
+        array[3] = run.runid.toString()
         bundle.putStringArray("details", array)
         var fragment = FragmentRunDetails()
         fragment.setArguments(bundle)
@@ -319,13 +335,25 @@ class MainActivity : AppCompatActivity(), FragmentNewRun.FragmentNewRunListener,
         val gps = prefManager.getBoolean("switch_gps", true)
         val bluetooth = prefManager.getBoolean("switch_bluetooth", true)
         val name = prefManager.getString("edit_name", "name")
-        Log.d("DEBUG", "gps: " + gps + ", bluetooth: "+bluetooth+ ", name: "+name)
+        Log.d("DEBUG_main", "gps: " + gps + ", bluetooth: "+bluetooth+ ", name: "+name)
+        user[0] = gps.toString()
+        user[1] = bluetooth.toString()
+        user[2] = name
+    }
+
+    //delete Run
+    override fun deleteRun(id: Int){
+        Log.d("DEBUG_main", "delete")
+        val db = RunDB.get(this)
+        val run = db.runDao().getRunByd(id)
+        Log.d("DEBUG_main", run.toString())
+        db.runDao().delete(run)
+        Toast.makeText(this@MainActivity, getString(R.string.delete_Toast), Toast.LENGTH_SHORT).show()
+        navigation!!.selectedItemId = R.id.navigation_myRunns
     }
 
     //function for swipen the menu
-    override fun onSwipeLeftNewRun(time: Long) {
-        timer = time
-        Log.d("DEBUG_main", time.toString())
+    override fun onSwipeLeftNewRun() {
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
 
