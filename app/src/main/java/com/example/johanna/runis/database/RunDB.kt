@@ -10,7 +10,7 @@ import com.example.johanna.runis.database.daos.RunDetailsDao
 import com.example.johanna.runis.database.entities.Run
 import com.example.johanna.runis.database.entities.RunDetails
 
-@Database(entities = [(Run::class), (RunDetails::class)], version = 3)
+@Database(entities = [(Run::class), (RunDetails::class)], version = 4)
 abstract class RunDB: RoomDatabase() {
     abstract fun runDetailsDao(): RunDetailsDao
     abstract fun runDao(): RunDao

@@ -9,10 +9,11 @@ data class Run(
         val time: String, //time in minutes
         val km: String,
         val date: String,
-        val date_base: Long
+        val date_base: Long,
+        val date_milisecound: Long
 ) {
     //constructor, getter and setter are implicit :)
     override fun toString(): String{
-        return "$runid:  $date, $time, $km"
+        return "$runid:  $date, $time, $km, base: $date_base"
     }
 }
