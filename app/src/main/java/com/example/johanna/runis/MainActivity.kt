@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         val runs = db.runDao().getAll()
         var totalKm = 0.0
         for (run in runs){
-            if(!run.km.equals("Km")){
+            if(!run.km.equals("Km") && !run.km.equals("-")){
                 Log.d("DEBUG_main", java.lang.Double.valueOf(run.km).toString())
                 totalKm += java.lang.Double.valueOf(run.km)
             }else{
@@ -164,6 +164,8 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         content = findViewById<FrameLayout>(R.id.fragment_container) as FrameLayout
         navigation = findViewById<BottomNavigationView>(R.id.navigation) as BottomNavigationView
         navigation!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        stopPreference()
 
         val db = RunDB.get(this)
         db.runDao().insert(Run(0, "Time", "Km","Date", 0, 0))
@@ -225,40 +227,30 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
 
     //start new run and start chronometer
     override fun newRun() {
-        newRun = true
-
         chronometer = findViewById(R.id.chronometer)
-        startChronometer()
 
-        val fragment = FragmentNewRun()
-        addFragment(fragment)
-    }
-    override fun newRunFirst() {
-        newRun()
-    }
-
-    override fun connectBT(){
-        val fragment = BluetoothFragment()
-        addFragment(fragment)
+        if(startChronometer()){
+            navigation!!.selectedItemId = R.id.navigation_home
+        }else{
+            Toast.makeText(this@MainActivity, getString(R.string.main_Toast_noRun), Toast.LENGTH_SHORT).show()
+        }
     }
 
-    override fun connectBTFirst(){
-        val fragment = BluetoothFragment()
-        addFragment(fragment)
-    }
-
-    fun startChronometer() {
-        Log.d("DEBUG_main_startChrono",SystemClock.elapsedRealtime().toString())
-        chronometer!!.setBase(SystemClock.elapsedRealtime())
-        chronometer!!.start()
-        Log.d("DEBUG_main_startChrono", chronometer!!.base.toString())
-        newRun = true
-
-
-        val c = Calendar.getInstance()
-        val date = c.get(Calendar.DATE).toString()+"."+c.get(Calendar.MONTH).toString()+"."+c.get(Calendar.YEAR).toString()
+    fun startChronometer(): Boolean {
         val db = RunDB.get(this)
-        db.runDao().insert(Run(runID,  "-", "-", date, chronometer!!.base, 0))
+        val size = db.runDao().getAll().size-1
+        if((db.runDao().getAll()[size].date_base == 0L && !newRun )|| db.runDao().getAll()[size].date_milisecound != 0L){
+            chronometer!!.setBase(SystemClock.elapsedRealtime())
+            chronometer!!.start()
+            newRun = true
+
+            val c = Calendar.getInstance()
+            val date = c.get(Calendar.DATE).toString()+"."+c.get(Calendar.MONTH).toString()+"."+c.get(Calendar.YEAR).toString()
+            db.runDao().insert(Run(runID,  "-", "-", date, chronometer!!.base, 0))
+            return true
+        }else{
+            return false
+        }
 
     }
 

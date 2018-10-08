@@ -17,8 +17,6 @@ class FragmentHome : Fragment() {
 
     interface FragmentHomeListener {
         fun onSwipeLeftHome()
-        fun newRun()
-        fun connectBT()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,14 +30,6 @@ class FragmentHome : Fragment() {
             }
         })
 
-        val add = rootView.findViewById<FloatingActionButton>(R.id.add)
-        val bt = rootView.findViewById<FloatingActionButton>(R.id.startBlueTooth)
-        add.setOnClickListener {
-            activityCallBack!!.newRun()
-        }
-        bt.setOnClickListener {
-            activityCallBack!!.connectBT()
-        }
 
         if(getArguments() != null){
             val args = getArguments()!!.getStringArray("details")

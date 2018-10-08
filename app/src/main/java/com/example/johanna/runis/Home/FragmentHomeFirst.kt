@@ -16,8 +16,6 @@ class FragmentHomeFirst : Fragment() {
 
     interface FragmentHomeFirstListener {
         fun onSwipeLeftHomeFirst()
-        fun newRunFirst()
-        fun connectBTFirst()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,15 +28,6 @@ class FragmentHomeFirst : Fragment() {
                 activityCallBack!!.onSwipeLeftHomeFirst()
             }
         })
-
-        val add = rootView.findViewById<FloatingActionButton>(R.id.add)
-        val bt = rootView.findViewById<FloatingActionButton>(R.id.startBlueTooth)
-        add.setOnClickListener {
-            activityCallBack!!.newRunFirst()
-        }
-        bt.setOnClickListener {
-            activityCallBack!!.connectBTFirst()
-        }
 
         return rootView
     }
