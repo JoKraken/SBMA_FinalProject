@@ -33,10 +33,9 @@
         android:id="@+id/last_date"
         android:layout_width="182dp"
         android:layout_height="37dp"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="197dp"
+        android:layout_alignStart="@+id/txtheadline"
+        android:layout_marginTop="203dp"
         android:textSize="18sp" />
 
     <TextView
@@ -52,9 +51,8 @@
         android:id="@+id/last_km2"
         android:layout_width="158dp"
         android:layout_height="37dp"
-        android:layout_alignEnd="@+id/startBlueTooth"
-        android:layout_alignTop="@+id/last_km"
-        android:layout_marginEnd="-42dp"
+        android:layout_below="@+id/last_date"
+        android:layout_toEndOf="@+id/last_km"
         android:textSize="18sp" />
 
     <TextView
@@ -70,9 +68,8 @@
         android:id="@+id/last_time2"
         android:layout_width="156dp"
         android:layout_height="37dp"
-        android:layout_alignEnd="@+id/startBlueTooth"
-        android:layout_alignTop="@+id/last_time"
-        android:layout_marginEnd="-42dp"
+        android:layout_below="@+id/last_km"
+        android:layout_toEndOf="@+id/last_km"
         android:textSize="18sp" />
 
     <TextView
@@ -86,26 +83,16 @@
         android:text="@string/home_moreInfo"
         android:textSize="16sp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="68dp"
-        android:layout_marginEnd="30dp"
-        android:clickable="true"
-        app:srcCompat="@drawable/ic_plus" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/startBlueTooth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/add"
-        android:layout_marginEnd="16dp"
-        android:layout_toStartOf="@+id/add"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/stat_sys_data_bluetooth" />
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/add"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_marginBottom="68dp"-->
+        <!--android:layout_marginEnd="30dp"-->
+        <!--android:clickable="true"-->
+        <!--app:srcCompat="@drawable/ic_plus" />-->
 
 </RelativeLayout>
 
