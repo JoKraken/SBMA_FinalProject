@@ -48,11 +48,11 @@ class FragmentMyRuns: ListFragment() {
 
         if (arguments != null) {
             val totalKm = arguments!!.getDouble("totalKm")
-            val totalKm_view = rootView.findViewById(R.id.totalKm) as TextView
-            totalKm_view.text = totalKm.toString()+" "+getString(R.string.home_km)
-            val totalTime_view = rootView.findViewById(R.id.totalTime) as TextView
+            val totalKmView = rootView.findViewById(R.id.totalKm) as TextView
+            totalKmView.text = totalKm.toString()+" "+getString(R.string.home_km)
+            val totalTimeView = rootView.findViewById(R.id.totalTime) as TextView
             val totalTime = arguments!!.getString("totalTime")
-            totalTime_view.text = totalTime+" "+getString(R.string.home_minutes)
+            totalTimeView.text = totalTime+" "+getString(R.string.home_minutes)
         }
 
         return rootView

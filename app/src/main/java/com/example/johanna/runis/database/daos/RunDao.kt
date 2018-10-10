@@ -20,10 +20,4 @@ interface RunDao {
     @Query("SELECT * FROM run " +
             "WHERE runid = :id LIMIT 1")
     fun getRunByd(id: Int): Run
-
-    @Query("SELECT * FROM runDetails " +
-            "INNER JOIN run " +
-            "ON runDetails.run = run.runid " +
-            "WHERE runDetails.run = :runid")
-    fun getUserRuns(runid: Int): List<Run>
 }

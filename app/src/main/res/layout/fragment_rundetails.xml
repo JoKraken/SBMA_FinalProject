@@ -57,5 +57,6 @@
         android:layout_marginBottom="68dp"
         android:layout_marginEnd="30dp"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_cross" />
+        app:srcCompat="@drawable/ic_cross"
+        android:focusable="true" />
 </RelativeLayout>
