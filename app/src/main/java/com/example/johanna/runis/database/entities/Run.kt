@@ -10,7 +10,8 @@ data class Run(
         val km: String,
         val date: String,
         val date_base: Long,
-        val date_milisecound: Long
+        val date_milisecound: Long,
+        val runroute: String
 ) {
     //constructor, getter and setter are implicit :)
     override fun toString(): String{

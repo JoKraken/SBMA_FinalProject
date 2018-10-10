@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         stopPreference()
 
         val db = RunDB.get(this)
-        db.runDao().insert(Run(0, "Time", "Km","Date", 0, 0))
+        db.runDao().insert(Run(0, "Time", "Km","Date", 0, 0, Gson().toJson(null, RunRoute::class.java)))
         runID = db.runDao().getAll().size
 
         var fragment = Fragment()
@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         var time = timeToString((SystemClock.elapsedRealtime()-chronometer!!.base))
         val c = Calendar.getInstance()
         val date = c.get(Calendar.DATE).toString()+"."+c.get(Calendar.MONTH).toString()+"."+c.get(Calendar.YEAR).toString()
-        db.runDao().insert(Run(runID,  time, "0.0", date, chronometer!!.base,(SystemClock.elapsedRealtime()-chronometer!!.base)))
+        db.runDao().update(Run(runID,  time, length.toString(), date, chronometer!!.base, (SystemClock.elapsedRealtime()-chronometer!!.base), Gson().toJson(runRoute)))
         runID = runID +1
         chronometer!!.setBase(SystemClock.elapsedRealtime())
         chronometer!!.stop()
@@ -250,7 +250,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
 
             val c = Calendar.getInstance()
             val date = c.get(Calendar.DATE).toString()+"."+c.get(Calendar.MONTH).toString()+"."+c.get(Calendar.YEAR).toString()
-            db.runDao().insert(Run(runID,  "-", "-", date, chronometer!!.base, 0))
+            db.runDao().insert(Run(runID,  "-", "-", date, chronometer!!.base, 0, Gson().toJson(null, RunRoute::class.java)))
             return true
         }else{
             return false
@@ -269,6 +269,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
             array[1] = run.km
             array[2] = run.time
             array[3] = run.runid.toString()
+            array[4] = run.runroute
             bundle.putStringArray("details", array)
             var fragment = FragmentRunDetails()
             fragment.setArguments(bundle)
