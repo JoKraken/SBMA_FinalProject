@@ -74,16 +74,16 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
             }
         })
 
-        val check = rootView.findViewById<FloatingActionButton>(R.id.check) as FloatingActionButton
+        val check = rootView.findViewById(R.id.check) as FloatingActionButton
         check.setOnClickListener {
             pauseChronometer()
             activityCallBack!!.endRun(chronometer!!.base, RunRoute(locationSteps, waypoints), lengthKm)
         }
 
         var time = 0
-        if (getArguments() != null) {
-            Log.d("DEBUG_newRun", getArguments()!!.getLong("timer").toString())
-            time = getArguments()!!.getLong("timer").toInt()
+        if (arguments != null) {
+            Log.d("DEBUG_newRun", arguments!!.getLong("timer").toString())
+            time = arguments!!.getLong("timer").toInt()
             Log.d("DEBUG_newRun", time.toString())
         }
 
@@ -106,7 +106,7 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         return rootView
     }
 
-    fun requestPermissions() {
+    private fun requestPermissions() {
         if (ContextCompat.checkSelfPermission(this.context!!,
                         Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -135,7 +135,7 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
     }
 
-    fun startChronometer(view: View) {
+    private fun startChronometer(view: View) {
         val lm = context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try{
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10 * 1000, 50f, this)
@@ -146,7 +146,7 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
         val ctx = this.context
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
-        val map = view.findViewById<MapView>(R.id.map) as MapView
+        val map = view.findViewById(R.id.map) as MapView
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setBuiltInZoomControls(true)
         map.setMultiTouchControls(true)
@@ -157,7 +157,7 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
     }
 
-    fun startChronometerAfterPermissionsRequest() {
+    private fun startChronometerAfterPermissionsRequest() {
         val lm = context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try{
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10 * 1000, 50f, this)
@@ -168,7 +168,7 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
         val ctx = this.context
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
-        val map = this.view!!.findViewById<MapView>(R.id.map) as MapView
+        val map = this.view!!.findViewById(R.id.map) as MapView
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setBuiltInZoomControls(true)
         map.setMultiTouchControls(true)
@@ -193,7 +193,7 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
             map.overlays.clear()
             val startMarker = Marker(map)
             startMarker.position = GeoPoint(p0)
-            val location = LocationData(GeoPoint(p0), SystemClock.elapsedRealtime()-chronometer!!.base, p0.speed*3.6f)
+            val location = LocationData(SystemClock.elapsedRealtime()-chronometer!!.base, p0.speed*3.6f)
             locationSteps.add(location)
             waypoints.add(GeoPoint(p0))
             startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)

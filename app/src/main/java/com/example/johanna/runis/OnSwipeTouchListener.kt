@@ -36,7 +36,7 @@ open class OnSwipeTouchListener: View.OnTouchListener {
         @SuppressLint("LongLogTag")
         override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             val result = false
-            var e1_1: MotionEvent? = if(e1 == null){
+            val e1_1: MotionEvent? = if(e1 == null){
                 Log.d("DEBUG_onSwipeListener_onFling", "e1 == null")
                 mLastOnDownEvent
             }else e1

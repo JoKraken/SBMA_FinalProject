@@ -16,7 +16,7 @@
     <string name="settings_headline3_sum">To change the Theme you have to restart the App afterwards</string>
     <string name="settings_name_sum">To change your name please click here</string>
     <string name="bt_title_start">Ready to connect</string>
-    <string name="bt_title_connecting">Connecting...</string>
+    <string name="bt_title_connecting">Connecting…</string>
     <string name="bt_title_accepted">Connected to device</string>
     <string name="bt_title_cannotfind">Cannot find the MoveSense device</string>
     <string name="bt_title_cannotconn">Cannot connect to the MoveSense device</string>
