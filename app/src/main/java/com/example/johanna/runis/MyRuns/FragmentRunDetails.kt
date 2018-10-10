@@ -59,15 +59,15 @@ class FragmentRunDetails: Fragment() {
         if (arguments != null) {
             val arg = arguments!!.getStringArray("details")
             //Log.d("DEBUG_details", arg[0]+", "+arg[1]+", "+arg[2])
-            val date = rootView.findViewById(R.id.date) as TextView
+            val date = rootView.findViewById<TextView>(R.id.date)
             date.text = ""+arg[0]
-            val km = rootView.findViewById(R.id.km) as TextView
+            val km = rootView.findViewById<TextView>(R.id.km)
             km.text = "km: "+arg[1]
-            val time = rootView.findViewById(R.id.time) as TextView
+            val time = rootView.findViewById<TextView>(R.id.time)
             time.text = "time: "+arg[2]
             runID = arg[3].toInt()
             runRoute = Gson().fromJson(arg[4], RunRoute::class.java)
-            val mapView = rootView.findViewById(R.id.map) as MapView
+            val mapView = rootView.findViewById<MapView>(R.id.map)
             if ((Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this.context!!,
                             android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
                 this.requestPermissions()
@@ -79,7 +79,7 @@ class FragmentRunDetails: Fragment() {
                 DataPoint(TimeUnit.MILLISECONDS.toSeconds(runRoute!!.waypoints[it].timeStamp).toDouble(), runRoute!!.waypoints[it].speed.toDouble())
             }
 
-            val graphView = rootView.findViewById(R.id.graph) as GraphView
+            val graphView = rootView.findViewById<GraphView>(R.id.graph)
             graphView.addSeries(LineGraphSeries<DataPoint>(datapoints))
             graphView.gridLabelRenderer.verticalAxisTitle = "Speed"
             graphView.gridLabelRenderer.numVerticalLabels = 5
