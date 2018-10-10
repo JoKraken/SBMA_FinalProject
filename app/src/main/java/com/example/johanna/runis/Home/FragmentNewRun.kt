@@ -39,6 +39,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import java.util.concurrent.TimeUnit
 
 
 class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
@@ -63,7 +64,7 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         sTemp = sm.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
         activityCallBack = context as FragmentNewRunListener
         if (sTemp == null) {
-            val temptxt = rootView.findViewById(R.id.temperatureTextView) as TextView
+            val temptxt = rootView.findViewById<TextView>(R.id.temperatureTextView)
             temptxt.setText(R.string.cannot_use_temperature)
         }
         rootView.setOnTouchListener(object : OnSwipeTouchListener() {
@@ -193,8 +194,6 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
             map.overlays.clear()
             val startMarker = Marker(map)
             startMarker.position = GeoPoint(p0)
-            val location = LocationData(GeoPoint(p0), SystemClock.elapsedRealtime()-chronometer!!.base, p0.speed*3.6f)
-            locationSteps.add(location)
             waypoints.add(GeoPoint(p0))
             startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             val roadManager = OSRMRoadManager(this.context)
@@ -204,6 +203,9 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
                 lengthKm += waypoints[waypoints.size-1].distanceToAsDouble(waypoints[waypoints.size-2])/1000
                 lengthKm = Math.round(lengthKm * 100.0) / 100.0
             }
+
+            val location = LocationData(GeoPoint(p0), SystemClock.elapsedRealtime()-chronometer!!.base, waypoints[waypoints.size-1].distanceToAsDouble(waypoints[waypoints.size-2])/1000 / TimeUnit.MILLISECONDS.toSeconds(SystemClock.elapsedRealtime()-chronometer!!.base))
+            locationSteps.add(location)
             val roadOverlay = RoadManager.buildRoadOverlay(road)
             roadOverlay.color = Color.RED
             map.overlays.add(roadOverlay)
