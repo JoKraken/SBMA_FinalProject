@@ -1,6 +1,7 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.MyRuns
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ListFragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_myruns.*
+import com.example.johanna.runis.OnSwipeTouchListener
+import com.example.johanna.runis.R
 
 class FragmentMyRuns: ListFragment() {
     internal var activityCallBack: FragmentMyRunsListener? = null
@@ -18,6 +19,7 @@ class FragmentMyRuns: ListFragment() {
         fun onSwipeRightMyRuns()
         fun onSwipeLeftMyRuns()
         fun onListClick(position: Int)
+        fun newRun()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,6 +37,11 @@ class FragmentMyRuns: ListFragment() {
                 activityCallBack!!.onSwipeRightMyRuns()
             }
         })
+
+        val add = rootView.findViewById<FloatingActionButton>(R.id.add)
+        add.setOnClickListener {
+            activityCallBack!!.newRun()
+        }
 
         if (getArguments() != null) {
             val totalKm = getArguments()!!.getDouble("totalKm")

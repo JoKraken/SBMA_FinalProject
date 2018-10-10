@@ -45,6 +45,8 @@
     <string name="myruns_time_total">total time: </string>
     <string name="runDetails">To delete this run, please click on the button in the bottom left corner.</string>
     <string name="delete_Toast">The run has been deleted</string>
+    <string name="main_Toast_noRunDetails">You are running this run, so you can not see the details</string>
+    <string name="main_Toast_noRun">You are running this run, so you can not start a new run</string>
     <string name="temperature">Outside temperature: </string>
     <string name="cannot_use_temperature">This function is not available on this phone</string>
 

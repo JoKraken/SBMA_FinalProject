@@ -1,4 +1,4 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.MyRuns
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -15,6 +15,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.johanna.runis.R
+import com.example.johanna.runis.RunRoute
 import com.google.gson.Gson
 import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
@@ -66,7 +68,7 @@ class FragmentRunDetails: Fragment() {
             runRoute = Gson().fromJson(arg[4], RunRoute::class.java)
             val mapView = rootView.findViewById<MapView>(R.id.map) as MapView
             if ((Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this.context!!,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
                 this.requestPermissions();
             }
             else {
@@ -114,11 +116,11 @@ class FragmentRunDetails: Fragment() {
 
     fun requestPermissions() {
         if (ContextCompat.checkSelfPermission(this.context!!,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity!!,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             } else {
                 ActivityCompat.requestPermissions(this.activity!!,
                         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),

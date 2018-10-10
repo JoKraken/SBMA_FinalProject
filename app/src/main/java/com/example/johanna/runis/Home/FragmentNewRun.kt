@@ -1,4 +1,4 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.Home
 
 import android.Manifest
 import android.content.Context
@@ -28,6 +28,10 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.getSystemService
 import android.widget.Chronometer
 import android.widget.TextView
+import com.example.johanna.runis.LocationData
+import com.example.johanna.runis.OnSwipeTouchListener
+import com.example.johanna.runis.R
+import com.example.johanna.runis.RunRoute
 import kotlinx.android.synthetic.main.fragment_newrun.*
 import org.osmdroid.bonuspack.routing.OSRMRoadManager
 import org.osmdroid.bonuspack.routing.RoadManager
@@ -92,18 +96,18 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
 
         chronometer!!.setOnChronometerTickListener(
                 Chronometer.OnChronometerTickListener { chronometer ->
-//            if (SystemClock.elapsedRealtime() - chronometer.base >= 10000) {
+                    //            if (SystemClock.elapsedRealtime() - chronometer.base >= 10000) {
 //                chronometer.base = SystemClock.elapsedRealtime()
 //                Toast.makeText(this.context, "Bing!", Toast.LENGTH_SHORT).show()
 //            }
-        })
+                })
         var policy = StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         if ((Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(this.context!!,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                || ContextCompat.checkSelfPermission(this.context!!,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                ) {
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                        || ContextCompat.checkSelfPermission(this.context!!,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        ) {
             this.requestPermissions();
         }
         else {
@@ -114,11 +118,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
 
     fun requestPermissions() {
         if (ContextCompat.checkSelfPermission(this.context!!,
-                Manifest.permission.ACCESS_FINE_LOCATION)
+                        Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity!!,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            Manifest.permission.ACCESS_FINE_LOCATION)) {
             } else {
                 ActivityCompat.requestPermissions(this.activity!!,
                         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -127,11 +131,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         } else {
         }
         if (ContextCompat.checkSelfPermission(this.context!!,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity!!,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             } else {
                 ActivityCompat.requestPermissions(this.activity!!,
                         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -246,8 +250,8 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
                 return
             }
 
-        // Add other 'when' lines to check for other
-        // permissions this app might request.
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
             else -> {
                 // Ignore all other requests.
             }

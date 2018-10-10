@@ -1,4 +1,4 @@
-package com.example.johanna.runis
+package com.example.johanna.runis.Home
 
 import android.support.v4.app.Fragment
 import android.os.Bundle
@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.support.design.widget.FloatingActionButton
-import android.widget.TextView
+import com.example.johanna.runis.OnSwipeTouchListener
+import com.example.johanna.runis.R
 
 
 class FragmentHomeFirst : Fragment() {
@@ -15,8 +16,6 @@ class FragmentHomeFirst : Fragment() {
 
     interface FragmentHomeFirstListener {
         fun onSwipeLeftHomeFirst()
-        fun newRunFirst()
-        fun connectBTFirst()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -29,11 +28,6 @@ class FragmentHomeFirst : Fragment() {
                 activityCallBack!!.onSwipeLeftHomeFirst()
             }
         })
-
-        val add = rootView.findViewById<FloatingActionButton>(R.id.add)
-        add.setOnClickListener {
-            activityCallBack!!.newRunFirst()
-        }
 
         return rootView
     }
