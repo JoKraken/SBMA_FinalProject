@@ -32,6 +32,7 @@
         You can review this at My Runs.\n
         You can track your route via GPS and see the current temperature.\n
         After your run is complete, you can see your speed.\n
+        You can also make predictions about the next run. Just press the diagram button at My Runs.\n
         If you do not want the app to use your GPS location, you can prohibit this under Settings.\n
         Please also enter a name under Settings.\n</string>
     <string name="title_home_headline">Hello</string>
@@ -50,5 +51,13 @@
     <string name="main_Toast_noRunGPS">You GPS is switched off so you can not start a new run. Please go to settings and turn it on</string>
     <string name="temperature">Outside temperature: </string>
     <string name="cannot_use_temperature">This function is not available on this phone</string>
+    <string name="prediction_text">You can predict your next run based on the time (in minutes)...</string>
+    <string name="prediction_text2">... or the distance (in km)</string>
+    <string name="prediction_button_predict">predict</string>
+    <string name="prediction_canNot_km">You can not predict the distance because you have not run</string>
+    <string name="prediction_canNot_minutes">You can not predict the time because you have not run</string>
+    <string name="prediction_return">You will run in </string>
+    <string name="prediction_return_km"> km </string>
+    <string name="prediction_return_minutes"> minutes </string>
 
 </resources>
