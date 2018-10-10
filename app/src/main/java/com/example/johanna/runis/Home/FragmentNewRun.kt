@@ -202,10 +202,10 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
             if(waypoints.size >= 2){
                 lengthKm += waypoints[waypoints.size-1].distanceToAsDouble(waypoints[waypoints.size-2])/1000
                 lengthKm = Math.round(lengthKm * 100.0) / 100.0
-            }
+                val location = LocationData(GeoPoint(p0), SystemClock.elapsedRealtime()-chronometer!!.base, waypoints[waypoints.size-1].distanceToAsDouble(waypoints[waypoints.size-2])/1000 / TimeUnit.MILLISECONDS.toSeconds(SystemClock.elapsedRealtime()-chronometer!!.base))
+                locationSteps.add(location)
 
-            val location = LocationData(GeoPoint(p0), SystemClock.elapsedRealtime()-chronometer!!.base, waypoints[waypoints.size-1].distanceToAsDouble(waypoints[waypoints.size-2])/1000 / TimeUnit.MILLISECONDS.toSeconds(SystemClock.elapsedRealtime()-chronometer!!.base))
-            locationSteps.add(location)
+            }
             val roadOverlay = RoadManager.buildRoadOverlay(road)
             roadOverlay.color = Color.RED
             map.overlays.add(roadOverlay)

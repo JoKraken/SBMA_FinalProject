@@ -229,11 +229,16 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
     override fun newRun() {
         chronometer = findViewById(R.id.chronometer)
 
-        if(startChronometer()){
-            navigation!!.selectedItemId = R.id.navigation_home
+        if(user[0] == "true"){
+            if(startChronometer()){
+                navigation!!.selectedItemId = R.id.navigation_home
+            }else{
+                Toast.makeText(this@MainActivity, getString(R.string.main_Toast_noRun), Toast.LENGTH_SHORT).show()
+            }
         }else{
-            Toast.makeText(this@MainActivity, getString(R.string.main_Toast_noRun), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, getString(R.string.main_Toast_noRunGPS), Toast.LENGTH_SHORT).show()
         }
+
     }
 
     private fun startChronometer(): Boolean {
