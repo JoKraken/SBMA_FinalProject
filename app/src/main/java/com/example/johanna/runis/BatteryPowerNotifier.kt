@@ -14,7 +14,7 @@ import android.os.BatteryManager
 class BatteryPowerNotifier : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val curLevel = intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
-        if(curLevel == 99){
+        if(curLevel == 15){
             Toast.makeText(context, "Battery is running low!", Toast.LENGTH_LONG).show()
         }
     }
