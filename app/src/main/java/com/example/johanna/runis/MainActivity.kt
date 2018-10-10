@@ -16,7 +16,9 @@ import android.widget.Toast
 import java.util.*
 import java.util.concurrent.TimeUnit
 import android.arch.persistence.room.Delete
-
+import com.google.gson.Gson
+import org.osmdroid.util.GeoPoint
+import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION")
@@ -29,7 +31,8 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
             val time: String, //time in minutes
             val km: String,
             val date: String,
-            val date_base: Long
+            val date_base: Long,
+            val runroute: String
     ) {
         //constructor, getter and setter are implicit :)
         override fun toString(): String{
@@ -85,7 +88,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         fun getUserRuns(runid: Int): List<Run>
     }
 
-    @Database(entities = [(Run::class), (RunDetails::class)], version = 3)
+    @Database(entities = [(Run::class), (RunDetails::class)], version = 4)
     abstract class RunDB: RoomDatabase() {
         abstract fun runDetailsDao(): RunDetailsDao
         abstract fun runDao(): RunDao
@@ -242,7 +245,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         navigation!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         val db = RunDB.get(this)
-        db.runDao().insert(Run(0, "Time", "Km","Date", 0))
+        db.runDao().insert(Run(0, "Time", "Km","Date", 0, Gson().toJson(null, RunRoute::class.java)))
         runID = db.runDao().getAll().size
 
         val fragment = getHomeFragment()
@@ -265,14 +268,14 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
     }
 
     //end run and stop chronometer
-    override fun endRun(time: Long) {
+    override fun endRun(time: Long, runRoute: RunRoute, length: Double) {
         newRun = false
 
         val db = RunDB.get(this)
         var time = timeToString((SystemClock.elapsedRealtime()-chronometer!!.base))
         val c = Calendar.getInstance()
         val date = c.get(Calendar.DATE).toString()+"."+c.get(Calendar.MONTH).toString()+"."+c.get(Calendar.YEAR).toString()
-        db.runDao().insert(Run(runID,  time, "0.0", date, (SystemClock.elapsedRealtime()-chronometer!!.base)))
+        db.runDao().insert(Run(runID,  time, length.toString(), date, (SystemClock.elapsedRealtime()-chronometer!!.base), Gson().toJson(runRoute)))
         runID = runID +1
         chronometer!!.setBase(SystemClock.elapsedRealtime())
         chronometer!!.stop()
@@ -322,6 +325,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         array[1] = run.km
         array[2] = run.time
         array[3] = run.runid.toString()
+        array[4] = run.runroute
         bundle.putStringArray("details", array)
         var fragment = FragmentRunDetails()
         fragment.setArguments(bundle)

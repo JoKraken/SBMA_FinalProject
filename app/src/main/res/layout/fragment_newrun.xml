@@ -14,17 +14,6 @@
         android:layout_marginTop="15dp"
         android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/textViewDashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="new run"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:drawableTop="@drawable/ic_dashboard_black_24dp"/>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/check"
         android:layout_width="wrap_content"
@@ -43,6 +32,22 @@
         android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="30dp"/>
+
+    <TextView
+        android:id="@+id/temperatureTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/map"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp" />
+
+    <TextView
+        android:id="@+id/temperatureLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/temperature" />
 
 </RelativeLayout>

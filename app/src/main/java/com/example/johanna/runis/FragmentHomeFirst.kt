@@ -31,12 +31,8 @@ class FragmentHomeFirst : Fragment() {
         })
 
         val add = rootView.findViewById<FloatingActionButton>(R.id.add)
-        val bt = rootView.findViewById<FloatingActionButton>(R.id.startBlueTooth)
         add.setOnClickListener {
             activityCallBack!!.newRunFirst()
-        }
-        bt.setOnClickListener {
-            activityCallBack!!.connectBTFirst()
         }
 
         return rootView

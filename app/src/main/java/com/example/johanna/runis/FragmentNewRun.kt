@@ -5,6 +5,10 @@ import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -23,6 +27,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.getSystemService
 import android.widget.Chronometer
+import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_newrun.*
 import org.osmdroid.bonuspack.routing.OSRMRoadManager
 import org.osmdroid.bonuspack.routing.RoadManager
@@ -35,20 +40,31 @@ import org.osmdroid.views.overlay.PathOverlay
 import org.osmdroid.views.overlay.Polyline
 
 
-class FragmentNewRun: Fragment(), LocationListener {
+class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
+
     internal var activityCallBack: FragmentNewRunListener? = null
     private var chronometer: Chronometer? = null
     private var running: Boolean = false
     private var waypoints = ArrayList<GeoPoint>();
+    private var lengthKm = 0.0;
+    private var locationSteps = ArrayList<LocationData>();
+    private lateinit var sm: SensorManager
+    private var sTemp: Sensor? = null
+
     interface FragmentNewRunListener {
         fun onSwipeLeftNewRun()
-        fun endRun(time: Long)
+        fun endRun(time: Long, runRoute: RunRoute, length: Double)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var rootView = inflater!!.inflate(R.layout.fragment_newrun, container, false)
+        sm = context!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sTemp = sm.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
         activityCallBack = context as FragmentNewRunListener
-
+        if (sTemp == null) {
+            val temptv = rootView.findViewById<TextView>(R.id.temperatureTextView) as TextView
+            temptv.setText(R.string.cannot_use_temperature);
+        }
         rootView.setOnTouchListener(object : OnSwipeTouchListener() {
             override fun onSwipeLeft() {
                 Log.e("ViewSwipe", "Home Left")
@@ -60,7 +76,7 @@ class FragmentNewRun: Fragment(), LocationListener {
         val check = rootView.findViewById<FloatingActionButton>(R.id.check) as FloatingActionButton
         check.setOnClickListener {
             pauseChronometer()
-            activityCallBack!!.endRun(chronometer!!.base)
+            activityCallBack!!.endRun(chronometer!!.base, RunRoute(locationSteps, waypoints), lengthKm)
         }
 
         var time = 0
@@ -83,8 +99,11 @@ class FragmentNewRun: Fragment(), LocationListener {
         })
         var policy = StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        if ((Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this.context!!,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+        if ((Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(this.context!!,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                || ContextCompat.checkSelfPermission(this.context!!,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                ) {
             this.requestPermissions();
         }
         else {
@@ -107,7 +126,19 @@ class FragmentNewRun: Fragment(), LocationListener {
             }
         } else {
         }
+        if (ContextCompat.checkSelfPermission(this.context!!,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity!!,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(this.activity!!,
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        1)
+            }
+        } else {
+        }
     }
 
     fun startChronometer(view: View) {
@@ -168,11 +199,17 @@ class FragmentNewRun: Fragment(), LocationListener {
             map.overlays.clear()
             val startMarker = Marker(map)
             startMarker.position = GeoPoint(p0!!)
+            val location = LocationData(GeoPoint(p0!!), SystemClock.elapsedRealtime()-chronometer!!.base, p0!!.speed*3.6f)
+            locationSteps.add(location);
             waypoints.add(GeoPoint(p0!!));
             startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             var roadManager = OSRMRoadManager(this.context);
             roadManager.addRequestOption("routeType=multimodal");
             var road = roadManager.getRoad(waypoints);
+            if(waypoints.size >= 2){
+                lengthKm += waypoints.get(waypoints.size-1).distanceToAsDouble(waypoints.get(waypoints.size-2))/1000
+                lengthKm = Math.round(lengthKm * 100.0) / 100.0
+            }
             var roadOverlay = RoadManager.buildRoadOverlay(road);
             roadOverlay.color = Color.RED
             map.overlays.add(roadOverlay)
@@ -198,6 +235,16 @@ class FragmentNewRun: Fragment(), LocationListener {
                 }
                 return
             }
+            1 -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    startChronometerAfterPermissionsRequest()
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return
+            }
 
         // Add other 'when' lines to check for other
         // permissions this app might request.
@@ -206,5 +253,29 @@ class FragmentNewRun: Fragment(), LocationListener {
             }
         }
 
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        //Not implemented
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if(event?.sensor == sTemp && event?.values?.get(0) != null){
+
+            temperatureTextView.text = event.values.get(0).toString() + "°C"
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sTemp?.also {
+            sm.registerListener(this, it,
+                    SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sm.unregisterListener(this)
     }
 }
