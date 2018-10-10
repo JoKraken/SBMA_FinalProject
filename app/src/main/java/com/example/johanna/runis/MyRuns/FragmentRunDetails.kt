@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_newrun.*
 import org.osmdroid.bonuspack.routing.OSRMRoadManager
 import org.osmdroid.bonuspack.routing.RoadManager
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import java.text.NumberFormat
 import java.util.concurrent.TimeUnit
@@ -88,9 +89,11 @@ class FragmentRunDetails: Fragment() {
             graphView.viewport.isYAxisBoundsManual = true
             graphView.viewport.setMinY(0.0)
             graphView.viewport.setMaxY(20.0)
-            graphView.viewport.isXAxisBoundsManual = true
-            graphView.viewport.setMinX(0.0)
-            graphView.viewport.setMaxX(TimeUnit.MILLISECONDS.toSeconds(runRoute!!.waypoints[runRoute!!.waypoints.size-1].timeStamp).toDouble())
+            if(runRoute!!.waypoints.size > 1){
+                graphView.viewport.isXAxisBoundsManual = true
+                graphView.viewport.setMinX(0.0)
+                graphView.viewport.setMaxX(TimeUnit.MILLISECONDS.toSeconds(runRoute!!.waypoints[runRoute!!.waypoints.size-1].timeStamp).toDouble())
+            }
         }else{
             Log.d("DEBUG_details", "getArguments() == null")
         }
@@ -104,19 +107,20 @@ class FragmentRunDetails: Fragment() {
         mv.setMultiTouchControls(true)
         mv.controller.setZoom(15.0)
         if(runRoute!!.geopoints.size > 0){
-            mv.controller.setCenter(runRoute!!.geopoints.get(0))
+            mv.controller.setCenter(runRoute!!.geopoints[0])
+            val roadManager = OSRMRoadManager(this.context)
+            roadManager.addRequestOption("routeType=multimodal")
+            val road = roadManager.getRoad(runRoute!!.geopoints)
+            val roadOverlay = RoadManager.buildRoadOverlay(road)
+            roadOverlay.color = Color.RED
+
+            mv.overlays.add(roadOverlay)
+            mv.invalidate()
         }
         else{
             mv.controller.setCenter(GeoPoint(0.0, 0.0))
         }
-        var roadManager = OSRMRoadManager(this.context);
-        roadManager.addRequestOption("routeType=multimodal");
-        var road = roadManager.getRoad(runRoute!!.geopoints);
-        var roadOverlay = RoadManager.buildRoadOverlay(road);
-        roadOverlay.color = Color.RED
 
-        mv.overlays.add(roadOverlay)
-        mv.invalidate()
     }
 
     private fun requestPermissions() {
