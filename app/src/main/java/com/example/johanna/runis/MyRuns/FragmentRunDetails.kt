@@ -103,7 +103,12 @@ class FragmentRunDetails: Fragment() {
         mv.setBuiltInZoomControls(true)
         mv.setMultiTouchControls(true)
         mv.controller.setZoom(15.0)
-        mv.controller.setCenter(runRoute!!.geopoints.get(0))
+        if(runRoute!!.geopoints.size > 0){
+            mv.controller.setCenter(runRoute!!.geopoints.get(0))
+        }
+        else{
+            mv.controller.setCenter(GeoPoint(0.0, 0.0))
+        }
         var roadManager = OSRMRoadManager(this.context);
         roadManager.addRequestOption("routeType=multimodal");
         var road = roadManager.getRoad(runRoute!!.geopoints);
