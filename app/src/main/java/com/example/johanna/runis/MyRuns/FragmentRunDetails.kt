@@ -1,6 +1,7 @@
 package com.example.johanna.runis.MyRuns
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -20,7 +21,6 @@ import com.example.johanna.runis.RunRoute
 import com.google.gson.Gson
 import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
-import com.jjoe64.graphview.helper.StaticLabelsFormatter
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.fragment_newrun.*
@@ -29,13 +29,13 @@ import org.osmdroid.bonuspack.routing.RoadManager
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.concurrent.TimeUnit
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class FragmentRunDetails: Fragment() {
 
-    internal var activityCallBack: FragmentRunDetailsListener? = null
+    private var activityCallBack: FragmentRunDetailsListener? = null
     private var runID: Int = 0
     private var runRoute: RunRoute? = null
 
@@ -43,8 +43,9 @@ class FragmentRunDetails: Fragment() {
         fun deleteRun(id: Int)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView = inflater!!.inflate(R.layout.fragment_rundetails, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_rundetails, container, false)
         activityCallBack = context as FragmentRunDetailsListener
 
 
@@ -53,44 +54,46 @@ class FragmentRunDetails: Fragment() {
             Log.d("DEBUG_runDetails", "in onclick")
             activityCallBack!!.deleteRun(runID)
         }
-        var policy = StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        if (getArguments() != null) {
-            var arg = getArguments()!!.getStringArray("details")
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        if (arguments != null) {
+            val arg = arguments!!.getStringArray("details")
             //Log.d("DEBUG_details", arg[0]+", "+arg[1]+", "+arg[2])
-            val date = rootView.findViewById<TextView>(R.id.date) as TextView
+            val date = rootView.findViewById(R.id.date) as TextView
             date.text = ""+arg[0]
-            val km = rootView.findViewById<TextView>(R.id.km) as TextView
+            val km = rootView.findViewById(R.id.km) as TextView
             km.text = "km: "+arg[1]
-            val time = rootView.findViewById<TextView>(R.id.time) as TextView
+            val time = rootView.findViewById(R.id.time) as TextView
             time.text = "time: "+arg[2]
             runID = arg[3].toInt()
             runRoute = Gson().fromJson(arg[4], RunRoute::class.java)
-            val mapView = rootView.findViewById<MapView>(R.id.map) as MapView
+            val mapView = rootView.findViewById(R.id.map) as MapView
             if ((Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this.context!!,
                             android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
-                this.requestPermissions();
+                this.requestPermissions()
             }
             else {
-                initializeMap(mapView)
+                this.initializeMap(mapView)
             }
-            val datapoints = Array<DataPoint>(runRoute!!.waypoints.size, {
-                DataPoint(TimeUnit.MILLISECONDS.toSeconds(runRoute!!.waypoints.get(it).timeStamp).toDouble(), runRoute!!.waypoints.get(it).speed.toDouble())
-            })
+            val datapoints = Array(runRoute!!.waypoints.size) {
+                DataPoint(TimeUnit.MILLISECONDS.toSeconds(runRoute!!.waypoints[it].timeStamp).toDouble(), runRoute!!.waypoints[it].speed.toDouble())
+            }
 
-            val graphView = rootView.findViewById<GraphView>(R.id.graph) as GraphView
+            val graphView = rootView.findViewById(R.id.graph) as GraphView
             graphView.addSeries(LineGraphSeries<DataPoint>(datapoints))
             graphView.gridLabelRenderer.verticalAxisTitle = "Speed"
             graphView.gridLabelRenderer.numVerticalLabels = 5
-            var nf = NumberFormat.getInstance()
+            val nf = NumberFormat.getInstance()
             nf.maximumFractionDigits = 0
             graphView.gridLabelRenderer.labelFormatter = DefaultLabelFormatter(nf, nf)
-            graphView.getViewport().setYAxisBoundsManual(true);
+            graphView.viewport.isYAxisBoundsManual = true
             graphView.viewport.setMinY(0.0)
             graphView.viewport.setMaxY(20.0)
-            graphView.getViewport().setXAxisBoundsManual(true);
-            graphView.viewport.setMinX(0.0)
-            graphView.viewport.setMaxX(TimeUnit.MILLISECONDS.toSeconds(runRoute!!.waypoints.get(runRoute!!.waypoints.size-1).timeStamp).toDouble())
+            if(runRoute!!.waypoints.size > 1){
+                graphView.viewport.isXAxisBoundsManual = true
+                graphView.viewport.setMinX(0.0)
+                graphView.viewport.setMaxX(TimeUnit.MILLISECONDS.toSeconds(runRoute!!.waypoints[runRoute!!.waypoints.size-1].timeStamp).toDouble())
+            }
         }else{
             Log.d("DEBUG_details", "getArguments() == null")
         }
@@ -98,28 +101,29 @@ class FragmentRunDetails: Fragment() {
         return rootView
     }
 
-    fun initializeMap(mv: MapView){
+    private fun initializeMap(mv: MapView){
         mv.setTileSource(TileSourceFactory.MAPNIK)
         mv.setBuiltInZoomControls(true)
         mv.setMultiTouchControls(true)
         mv.controller.setZoom(15.0)
         if(runRoute!!.geopoints.size > 0){
-            mv.controller.setCenter(runRoute!!.geopoints.get(0))
+            mv.controller.setCenter(runRoute!!.geopoints[0])
+            val roadManager = OSRMRoadManager(this.context)
+            roadManager.addRequestOption("routeType=multimodal")
+            val road = roadManager.getRoad(runRoute!!.geopoints)
+            val roadOverlay = RoadManager.buildRoadOverlay(road)
+            roadOverlay.color = Color.RED
+
+            mv.overlays.add(roadOverlay)
+            mv.invalidate()
         }
         else{
             mv.controller.setCenter(GeoPoint(0.0, 0.0))
         }
-        var roadManager = OSRMRoadManager(this.context);
-        roadManager.addRequestOption("routeType=multimodal");
-        var road = roadManager.getRoad(runRoute!!.geopoints);
-        var roadOverlay = RoadManager.buildRoadOverlay(road);
-        roadOverlay.color = Color.RED
 
-        mv.overlays.add(roadOverlay)
-        mv.invalidate()
     }
 
-    fun requestPermissions() {
+    private fun requestPermissions() {
         if (ContextCompat.checkSelfPermission(this.context!!,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {

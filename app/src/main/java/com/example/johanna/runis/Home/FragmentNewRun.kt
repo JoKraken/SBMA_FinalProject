@@ -1,8 +1,8 @@
 package com.example.johanna.runis.Home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.hardware.Sensor
@@ -25,7 +25,6 @@ import android.os.SystemClock
 import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.getSystemService
 import android.widget.Chronometer
 import android.widget.TextView
 import com.example.johanna.runis.LocationData
@@ -40,8 +39,6 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.PathOverlay
-import org.osmdroid.views.overlay.Polyline
 
 
 class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
@@ -49,9 +46,9 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
     internal var activityCallBack: FragmentNewRunListener? = null
     private var chronometer: Chronometer? = null
     private var running: Boolean = false
-    private var waypoints = ArrayList<GeoPoint>();
-    private var lengthKm = 0.0;
-    private var locationSteps = ArrayList<LocationData>();
+    private var waypoints = ArrayList<GeoPoint>()
+    private var lengthKm = 0.0
+    private var locationSteps = ArrayList<LocationData>()
     private lateinit var sm: SensorManager
     private var sTemp: Sensor? = null
 
@@ -61,13 +58,13 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView = inflater!!.inflate(R.layout.fragment_newrun, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_newrun, container, false)
         sm = context!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sTemp = sm.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
         activityCallBack = context as FragmentNewRunListener
         if (sTemp == null) {
-            val temptv = rootView.findViewById<TextView>(R.id.temperatureTextView) as TextView
-            temptv.setText(R.string.cannot_use_temperature);
+            val temptxt = rootView.findViewById(R.id.temperatureTextView) as TextView
+            temptxt.setText(R.string.cannot_use_temperature)
         }
         rootView.setOnTouchListener(object : OnSwipeTouchListener() {
             override fun onSwipeLeft() {
@@ -91,24 +88,17 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
 
         chronometer = rootView.findViewById(R.id.chronometer)
-        chronometer!!.setFormat("Time: %s")
+        chronometer!!.format = "Time: %s"
         chronometer!!.base = (SystemClock.elapsedRealtime() - (time))
 
-        chronometer!!.setOnChronometerTickListener(
-                Chronometer.OnChronometerTickListener { chronometer ->
-                    //            if (SystemClock.elapsedRealtime() - chronometer.base >= 10000) {
-//                chronometer.base = SystemClock.elapsedRealtime()
-//                Toast.makeText(this.context, "Bing!", Toast.LENGTH_SHORT).show()
-//            }
-                })
-        var policy = StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
         if ((Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(this.context!!,
                         android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                         || ContextCompat.checkSelfPermission(this.context!!,
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         ) {
-            this.requestPermissions();
+            this.requestPermissions()
         }
         else {
             startChronometer(rootView)
@@ -151,8 +141,8 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10 * 1000, 50f, this)
         }
         catch (e: SecurityException){
-            Log.d("error", e.message);
-            return;
+            Log.d("error", e.message)
+            return
         }
         val ctx = this.context
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
@@ -173,8 +163,8 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10 * 1000, 50f, this)
         }
         catch (e: SecurityException){
-            Log.d("error", e.message);
-            return;
+            Log.d("error", e.message)
+            return
         }
         val ctx = this.context
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
@@ -199,22 +189,22 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
     override fun onLocationChanged(p0: Location?) {	//new location react...
         Log.d("GEOLOCATION", "new latitude: ${p0?.latitude} and longitude: ${p0?.longitude}")
         if(p0 != null && map != null){
-            map.controller.setCenter(GeoPoint(p0!!.latitude, p0!!.longitude))
+            map.controller.setCenter(GeoPoint(p0.latitude, p0.longitude))
             map.overlays.clear()
             val startMarker = Marker(map)
-            startMarker.position = GeoPoint(p0!!)
-            val location = LocationData(GeoPoint(p0!!), SystemClock.elapsedRealtime()-chronometer!!.base, p0!!.speed*3.6f)
-            locationSteps.add(location);
-            waypoints.add(GeoPoint(p0!!));
+            startMarker.position = GeoPoint(p0)
+            val location = LocationData(GeoPoint(p0), SystemClock.elapsedRealtime()-chronometer!!.base, p0.speed*3.6f)
+            locationSteps.add(location)
+            waypoints.add(GeoPoint(p0))
             startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            var roadManager = OSRMRoadManager(this.context);
-            roadManager.addRequestOption("routeType=multimodal");
-            var road = roadManager.getRoad(waypoints);
+            val roadManager = OSRMRoadManager(this.context)
+            roadManager.addRequestOption("routeType=multimodal")
+            val road = roadManager.getRoad(waypoints)
             if(waypoints.size >= 2){
-                lengthKm += waypoints.get(waypoints.size-1).distanceToAsDouble(waypoints.get(waypoints.size-2))/1000
+                lengthKm += waypoints[waypoints.size-1].distanceToAsDouble(waypoints[waypoints.size-2])/1000
                 lengthKm = Math.round(lengthKm * 100.0) / 100.0
             }
-            var roadOverlay = RoadManager.buildRoadOverlay(road);
+            val roadOverlay = RoadManager.buildRoadOverlay(road)
             roadOverlay.color = Color.RED
             map.overlays.add(roadOverlay)
             map.overlays.add(startMarker)
@@ -263,10 +253,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         //Not implemented
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onSensorChanged(event: SensorEvent?) {
-        if(event?.sensor == sTemp && event?.values?.get(0) != null){
+        if(event?.sensor == sTemp && event?.values?.get(index = 0) != null){
 
-            temperatureTextView.text = event.values.get(0).toString() + "°C"
+            temperatureTextView.text = event.values[0].toString() + "°C"
         }
     }
 

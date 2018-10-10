@@ -3,7 +3,6 @@ package com.example.johanna.runis.database
 import android.arch.persistence.db.SupportSQLiteOpenHelper
 import android.arch.persistence.room.DatabaseConfiguration
 import android.arch.persistence.room.InvalidationTracker
-import com.example.johanna.runis.database.RunDB
 import com.example.johanna.runis.database.daos.RunDao
 import com.example.johanna.runis.database.daos.RunDetailsDao
 
