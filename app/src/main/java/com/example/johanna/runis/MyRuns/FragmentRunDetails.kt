@@ -43,6 +43,11 @@ class FragmentRunDetails: Fragment() {
         fun deleteRun(id: Int)
     }
 
+    /*
+    input: inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    output: View?
+    description: create view, setOnClickListener to delete a run
+    */
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_rundetails, container, false)
@@ -101,6 +106,11 @@ class FragmentRunDetails: Fragment() {
         return rootView
     }
 
+    /*
+    input: mv: MapView
+    output: void
+    description: initialize the map
+    */
     private fun initializeMap(mv: MapView){
         mv.setTileSource(TileSourceFactory.MAPNIK)
         mv.setBuiltInZoomControls(true)
@@ -123,6 +133,11 @@ class FragmentRunDetails: Fragment() {
 
     }
 
+    /*
+    input: -
+    output: void
+    description: request the permissions
+    */
     private fun requestPermissions() {
         if (ContextCompat.checkSelfPermission(this.context!!,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -139,6 +154,11 @@ class FragmentRunDetails: Fragment() {
         }
     }
 
+    /*
+    input: requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    output: void
+    description: is triggered when permissions have been requested, if accepted, continue with initializing app
+    */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
