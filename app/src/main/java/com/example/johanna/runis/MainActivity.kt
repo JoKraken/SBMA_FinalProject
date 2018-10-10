@@ -23,6 +23,10 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import com.example.johanna.runis.database.RunDB
 import com.example.johanna.runis.database.entities.Run
+import com.google.gson.Gson
+import org.osmdroid.util.GeoPoint
+import kotlin.collections.ArrayList
+import android.arch.persistence.room.Delete
 
 
 @Suppress("DEPRECATION")
@@ -210,7 +214,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
     }
 
     //end run and stop chronometer
-    override fun endRun(time: Long) {
+    override fun endRun(time: Long, runRoute: RunRoute, length: Double) {
         newRun = false
 
         val db = RunDB.get(this)
