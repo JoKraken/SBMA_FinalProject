@@ -24,6 +24,11 @@ class FragmentMyRuns: ListFragment() {
         fun newRun()
     }
 
+    /*
+    input: inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    output: View?
+    description: create view, setOnTouchListener for swiping, setOnClickListener to start a new run
+    */
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_myruns, container, false)
@@ -57,7 +62,12 @@ class FragmentMyRuns: ListFragment() {
 
         return rootView
     }
-    
+
+    /*
+    input: l: ListView?, v: View?, position: Int, id: Long
+    output: void
+    description: if you click on a item in the list and the position != 0 the function onListClick(position) on the interface is called
+    */
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         if(position!= 0){
             super.onListItemClick(l, v, position, id)

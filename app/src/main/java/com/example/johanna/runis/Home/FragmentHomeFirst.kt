@@ -17,6 +17,11 @@ class FragmentHomeFirst : Fragment() {
         fun onSwipeLeftHomeFirst()
     }
 
+    /*
+    input: inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    output: View?
+    description: create view, setOnTouchListener for swiping
+    */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView : View? = inflater.inflate(R.layout.fragment_home_first, container, false)
         activityCallBack = context as FragmentHomeFirstListener

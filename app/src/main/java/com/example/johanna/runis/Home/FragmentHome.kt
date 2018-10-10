@@ -20,6 +20,12 @@ class FragmentHome : Fragment() {
         fun onSwipeLeftHome()
     }
 
+
+    /*
+    input: inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    output: View?
+    description: create view, setOnTouchListener for swiping, set details from the last run
+    */
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView : View? = inflater.inflate(R.layout.fragment_home, container, false)
