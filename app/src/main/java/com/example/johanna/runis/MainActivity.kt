@@ -24,12 +24,9 @@ import java.util.concurrent.TimeUnit
 import com.example.johanna.runis.database.RunDB
 import com.example.johanna.runis.database.entities.Run
 import com.google.gson.Gson
-import org.osmdroid.util.GeoPoint
-import kotlin.collections.ArrayList
-import android.arch.persistence.room.Delete
 
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "SENSELESS_COMPARISON", "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsListener, FragmentNewRun.FragmentNewRunListener, FragmentHomeFirst.FragmentHomeFirstListener, FragmentHome.FragmentHomeListener, FragmentSettings.FragmentSettingsListener, FragmentMyRuns.FragmentMyRunsListener{
 
     private var content: FrameLayout? = null
@@ -41,7 +38,6 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
     //chronometer
     private var newRun: Boolean = false
     private var chronometer: Chronometer? = null
-    private var timer: Long = 0
     private var user = Array<String>(3){""} //gps, bluetooth, name
 
     private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
