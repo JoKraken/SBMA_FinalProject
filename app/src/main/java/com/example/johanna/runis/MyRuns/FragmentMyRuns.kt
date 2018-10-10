@@ -1,5 +1,6 @@
 package com.example.johanna.runis.MyRuns
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ListFragment
@@ -12,6 +13,7 @@ import android.widget.TextView
 import com.example.johanna.runis.OnSwipeTouchListener
 import com.example.johanna.runis.R
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class FragmentMyRuns: ListFragment() {
     internal var activityCallBack: FragmentMyRunsListener? = null
 
@@ -22,8 +24,9 @@ class FragmentMyRuns: ListFragment() {
         fun newRun()
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView = inflater!!.inflate(R.layout.fragment_myruns, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_myruns, container, false)
         activityCallBack = context as FragmentMyRunsListener
 
         rootView.setOnTouchListener(object : OnSwipeTouchListener() {
@@ -43,12 +46,12 @@ class FragmentMyRuns: ListFragment() {
             activityCallBack!!.newRun()
         }
 
-        if (getArguments() != null) {
-            val totalKm = getArguments()!!.getDouble("totalKm")
-            val totalKm_view = rootView.findViewById<TextView>(R.id.totalKm) as TextView
+        if (arguments != null) {
+            val totalKm = arguments!!.getDouble("totalKm")
+            val totalKm_view = rootView.findViewById(R.id.totalKm) as TextView
             totalKm_view.text = totalKm.toString()+" "+getString(R.string.home_km)
-            val totalTime_view = rootView.findViewById<TextView>(R.id.totalTime) as TextView
-            val totalTime = getArguments()!!.getString("totalTime")
+            val totalTime_view = rootView.findViewById(R.id.totalTime) as TextView
+            val totalTime = arguments!!.getString("totalTime")
             totalTime_view.text = totalTime+" "+getString(R.string.home_minutes)
         }
 
