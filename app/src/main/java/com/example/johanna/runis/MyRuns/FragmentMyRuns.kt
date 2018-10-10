@@ -22,6 +22,7 @@ class FragmentMyRuns: ListFragment() {
         fun onSwipeLeftMyRuns()
         fun onListClick(position: Int)
         fun newRun()
+        fun newPrediction()
     }
 
     /*
@@ -49,6 +50,11 @@ class FragmentMyRuns: ListFragment() {
         val add = rootView.findViewById<FloatingActionButton>(R.id.add)
         add.setOnClickListener {
             activityCallBack!!.newRun()
+        }
+
+        val predict = rootView.findViewById<FloatingActionButton>(R.id.predict)
+        predict.setOnClickListener {
+            activityCallBack!!.newPrediction()
         }
 
         if (arguments != null) {

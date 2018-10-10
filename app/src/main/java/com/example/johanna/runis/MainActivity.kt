@@ -16,6 +16,7 @@ import com.example.johanna.runis.Home.FragmentHome
 import com.example.johanna.runis.Home.FragmentHomeFirst
 import com.example.johanna.runis.Home.FragmentNewRun
 import com.example.johanna.runis.MyRuns.FragmentMyRuns
+import com.example.johanna.runis.MyRuns.FragmentPrediction
 import com.example.johanna.runis.MyRuns.FragmentRunDetails
 import com.example.johanna.runis.MyRuns.RunListAdapter
 import com.example.johanna.runis.Settings.FragmentSettings
@@ -254,7 +255,7 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         val time = timeToString((SystemClock.elapsedRealtime()-chronometer!!.base))
         val c = Calendar.getInstance()
         val date = c.get(Calendar.DATE).toString()+"."+c.get(Calendar.MONTH).toString()+"."+c.get(Calendar.YEAR).toString()
-        db.runDao().update(Run(runID,  time, length.toString(), date, chronometer!!.base, (SystemClock.elapsedRealtime()-chronometer!!.base), Gson().toJson(runRoute)))
+        db.runDao().update(Run(runID,  time, "1.6"/*length.toString()*/, date, chronometer!!.base, (SystemClock.elapsedRealtime()-chronometer!!.base), Gson().toJson(runRoute)))
         runID += 1
         chronometer!!.base = SystemClock.elapsedRealtime()
         chronometer!!.stop()
@@ -280,6 +281,20 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
             Toast.makeText(this@MainActivity, this.getString(R.string.main_Toast_noRunGPS), Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    /*
+    input: -
+    output: void
+    description: open FragmentPrediction
+    */
+    override fun newPrediction() {
+        val fragment = FragmentPrediction()
+        val bundle = Bundle()
+        bundle.putDouble("km", getAllKm())
+        bundle.putLong("minutes", TimeUnit.MILLISECONDS.toMinutes(getTotalTime()))
+        fragment.arguments = bundle
+        addFragment(fragment)
     }
 
     /*
