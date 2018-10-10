@@ -58,6 +58,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         fun endRun(time: Long, runRoute: RunRoute, length: Double)
     }
 
+    /*
+    input: inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    output: View?
+    description: create view, set OnTouchListener for swiping, set OnClickListener to finish a run, start chronometer
+    */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_newrun, container, false)
         sm = context!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -83,9 +88,9 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
 
         var time = 0
         if (arguments != null) {
-            Log.d("DEBUG_newRun", arguments!!.getLong("timer").toString())
+            //Log.d("DEBUG_newRun", arguments!!.getLong("timer").toString())
             time = arguments!!.getLong("timer").toInt()
-            Log.d("DEBUG_newRun", time.toString())
+            //Log.d("DEBUG_newRun", time.toString())
         }
 
         chronometer = rootView.findViewById(R.id.chronometer)
@@ -107,6 +112,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         return rootView
     }
 
+    /*
+    input: -
+    output: void
+    description:
+    */
     private fun requestPermissions() {
         if (ContextCompat.checkSelfPermission(this.context!!,
                         Manifest.permission.ACCESS_FINE_LOCATION)
@@ -136,6 +146,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
     }
 
+    /*
+    input: view: View
+    output: void
+    description: start chronometer
+    */
     private fun startChronometer(view: View) {
         val lm = context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try{
@@ -158,6 +173,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
     }
 
+    /*
+    input: -
+    output: void
+    description:
+    */
     private fun startChronometerAfterPermissionsRequest() {
         val lm = context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try{
@@ -180,6 +200,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
     }
 
+    /*
+    input: -
+    output: void
+    description: stop chronometer
+    */
     fun pauseChronometer() {
         if (running) {
             chronometer!!.stop()
@@ -187,6 +212,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
     }
 
+    /*
+    input: p0: Location?
+    output: void
+    description:
+    */
     override fun onLocationChanged(p0: Location?) {	//new location react...
         Log.d("GEOLOCATION", "new latitude: ${p0?.latitude} and longitude: ${p0?.longitude}")
         if(p0 != null && map != null){
@@ -218,6 +248,12 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
     override fun onProviderEnabled(p0: String?) {}
     override fun onProviderDisabled(p0: String?) {}
 
+
+    /*
+    input: requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    output: void
+    description:
+    */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -255,6 +291,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         //Not implemented
     }
 
+    /*
+    input: event: SensorEvent?
+    output: void
+    description:
+    */
     @SuppressLint("SetTextI18n")
     override fun onSensorChanged(event: SensorEvent?) {
         if(event?.sensor == sTemp && event?.values?.get(index = 0) != null){
@@ -263,6 +304,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
     }
 
+    /*
+    input: -
+    output: void
+    description:
+    */
     override fun onResume() {
         super.onResume()
         sTemp?.also {
@@ -271,6 +317,11 @@ class FragmentNewRun: Fragment(), LocationListener, SensorEventListener {
         }
     }
 
+    /*
+    input: -
+    output: void
+    description:
+    */
     override fun onPause() {
         super.onPause()
         sm.unregisterListener(this)

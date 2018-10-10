@@ -17,7 +17,6 @@ open class OnSwipeTouchListener: View.OnTouchListener {
     }
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
-
         private val SWIPE_THRESHOLD = 100
         private val SWIPE_VELOCITY_THRESHOLD = 100
         protected var mLastOnDownEvent: MotionEvent? = null

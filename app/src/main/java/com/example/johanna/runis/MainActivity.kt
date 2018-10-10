@@ -86,6 +86,11 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         false
     }
 
+    /*
+    input: -
+    output: Fragment
+    description: check if you need the FragmentHomeFirst or the FragmentHome
+    */
     private fun getHomeFragment(): Fragment{
         val fragment : Fragment
         val bundle = Bundle()
@@ -108,7 +113,11 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         return fragment
     }
 
-    //get total time from the user
+    /*
+    input: -
+    output: Long
+    description: get total time from the user
+    */
     private fun getTotalTime(): Long {
         val db = RunDB.get(this)
         val runs = db.runDao().getAll()
@@ -124,7 +133,11 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         return totalTime
     }
 
-    //get all km from the user
+    /*
+    input: -
+    output: Double
+    description: get all km from the user
+    */
     private fun getAllKm(): Double {
         val db = RunDB.get(this)
         val runs = db.runDao().getAll()
@@ -140,6 +153,11 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         return totalKm
     }
 
+    /*
+    input: time: Long
+    output: String
+    description: calculate from milliseconds seconds and minutes and return a String
+    */
     private fun timeToString(time: Long): String{
         val timeString: String
         val minutes = TimeUnit.MILLISECONDS.toMinutes(time)
@@ -153,6 +171,11 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         return timeString
     }
 
+    /*
+    input: savedInstanceState: Bundle?
+    output: void
+    description: create everything
+    */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setNewTheme()
@@ -194,7 +217,12 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).addToBackStack(null).commit()
 
     }
-    // set Theme
+
+    /*
+    input: -
+    output: void
+    description: set Theme
+    */
     private fun setNewTheme(){
         val prefManager = PreferenceManager.getDefaultSharedPreferences(this)
         val theme = prefManager.getString("list_preference_1", "1")
@@ -205,11 +233,20 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         }
     }
 
+    /*
+    input: fragment: Fragment
+    output: void
+    description: add fragment
+    */
     private fun addFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
     }
 
-    //end run and stop chronometer
+    /*
+    input: time: Long, runRoute: RunRoute, length: Double
+    output: void
+    description: end run and stop chronometer
+    */
     override fun endRun(time: Long, runRoute: RunRoute, length: Double) {
         newRun = false
 
@@ -225,7 +262,11 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         addFragment(fragment)
     }
 
-    //start new run and start chronometer
+    /*
+    input: -
+    output: void
+    description: check if the GPS is switched on and if the chronomater is started. yes ->change fragment no->show Toast
+    */
     override fun newRun() {
         chronometer = findViewById(R.id.chronometer)
 
@@ -233,14 +274,19 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
             if(startChronometer()){
                 navigation!!.selectedItemId = R.id.navigation_home
             }else{
-                Toast.makeText(this@MainActivity, getString(R.string.main_Toast_noRun), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, this.getString(R.string.main_Toast_noRun), Toast.LENGTH_SHORT).show()
             }
         }else{
-            Toast.makeText(this@MainActivity, getString(R.string.main_Toast_noRunGPS), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, this.getString(R.string.main_Toast_noRunGPS), Toast.LENGTH_SHORT).show()
         }
 
     }
 
+    /*
+    input: -
+    output: boolean
+    description: return if the chronometer is started
+    */
     private fun startChronometer(): Boolean {
         val db = RunDB.get(this)
         val size = db.runDao().getAll().size-1
@@ -259,7 +305,11 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
 
     }
 
-    //create rundetails fragment and put the information in bundle
+    /*
+    input: position: int
+    output: void
+    description: create rundetails fragment and put the information in bundle when date_milisecound != 0
+    */
     override fun onListClick(position: Int){
         val db = RunDB.get(this)
         val run = db.runDao().getAll()[position]
@@ -281,19 +331,26 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         }
     }
 
-    //get settings
+    /*
+    input: -
+    output: void
+    description: get settings and save them in user
+    */
     override fun stopPreference() {
         val prefManager = PreferenceManager.getDefaultSharedPreferences(this)
         val gps = prefManager.getBoolean("switch_gps", true)
-        //val bluetooth = prefManager.getBoolean("switch_bluetooth", true)
-        val name = prefManager.getString("edit_name", "name")
+        var name = prefManager.getString("edit_name", "name")
+        if (name == "name") name = ""
         Log.d("DEBUG_main", "gps: $gps, name: $name")
         user[0] = gps.toString()
-        //user[1] = bluetooth.toString()
         user[2] = name
     }
 
-    //delete Run
+    /*
+    input: -
+    output: void
+    description: delete Run and show a Toast
+    */
     override fun deleteRun(id: Int){
         Log.d("DEBUG_main", "delete")
         val db = RunDB.get(this)
@@ -304,7 +361,11 @@ class MainActivity : AppCompatActivity(), FragmentRunDetails.FragmentRunDetailsL
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
 
-    //function for swipen the menu
+    /*
+    input: -
+    output: void
+    description: function for swipen the menu
+    */
     override fun onSwipeLeftNewRun() {
         navigation!!.selectedItemId = R.id.navigation_myRunns
     }
