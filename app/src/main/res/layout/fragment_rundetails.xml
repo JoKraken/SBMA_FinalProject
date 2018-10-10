@@ -20,9 +20,8 @@
         android:layout_width="120dp"
         android:layout_height="39dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="46dp"
-        android:layout_marginTop="72dp"
+        android:layout_alignTop="@+id/km"
+        android:layout_marginEnd="48dp"
         android:textSize="18sp" />
 
     <TextView
@@ -30,9 +29,24 @@
         android:layout_width="120dp"
         android:layout_height="39dp"
         android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/time"
+        android:layout_below="@+id/date"
         android:layout_marginStart="36dp"
         android:textSize="18sp" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="107dp" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/map" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/delete"
@@ -43,5 +57,6 @@
         android:layout_marginBottom="68dp"
         android:layout_marginEnd="30dp"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_cross" />
+        app:srcCompat="@drawable/ic_cross"
+        android:focusable="true" />
 </RelativeLayout>

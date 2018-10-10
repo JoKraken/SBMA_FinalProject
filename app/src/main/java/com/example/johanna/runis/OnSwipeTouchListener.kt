@@ -2,6 +2,7 @@
 
 package com.example.johanna.runis
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -16,7 +17,6 @@ open class OnSwipeTouchListener: View.OnTouchListener {
     }
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
-
         private val SWIPE_THRESHOLD = 100
         private val SWIPE_VELOCITY_THRESHOLD = 100
         protected var mLastOnDownEvent: MotionEvent? = null
@@ -32,15 +32,15 @@ open class OnSwipeTouchListener: View.OnTouchListener {
         }
 
 
+        @SuppressLint("LongLogTag")
         override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             val result = false
-            var e1_1 : MotionEvent? = null
-            if(e1 == null){
+            val e1_1: MotionEvent? = if(e1 == null){
                 Log.d("DEBUG_onSwipeListener_onFling", "e1 == null")
-                e1_1 = mLastOnDownEvent
-            }else e1_1 = e1
+                mLastOnDownEvent
+            }else e1
 
-            if(e1_1 != null && e2 != null){
+            if(e1_1 != null){
                 Log.d("DEBUG_onSwipeListener_onFling", "e1 & e2 != null")
                 try {
                     val diffY = e2.y - e1_1.y
@@ -65,12 +65,12 @@ open class OnSwipeTouchListener: View.OnTouchListener {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent?): Boolean {
         Log.d("DEBUG_onswipe_onTouch", v.toString())
         Log.d("DEBUG_onswipe_onTouch", event.toString())
         Log.d("DEBUG_onswipe_onTouch", gestureDetector.onTouchEvent(event).toString())
-        val bool = gestureDetector.onTouchEvent(event)
-        return bool
+        return gestureDetector.onTouchEvent(event)
     }
 
     open fun onSwipeRight() {}

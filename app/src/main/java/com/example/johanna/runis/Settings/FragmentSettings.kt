@@ -20,6 +20,12 @@ class FragmentSettings: PreferenceFragmentCompat(){
         fun stopPreference()
     }
 
+
+    /*
+    input: inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    output: View?
+    description: create view, setOnTouchListener for swiping
+    */
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateRecyclerView(inflater: LayoutInflater?, parent: ViewGroup?, savedInstanceState: Bundle?): RecyclerView {
         Log.d("DEBUG", "onCreateRecyclerView")
@@ -36,11 +42,21 @@ class FragmentSettings: PreferenceFragmentCompat(){
         return rootView
     }
 
+    /*
+    input: -
+    output: void
+    description: is called when preferences are created
+    */
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_setting)
 
     }
 
+    /*
+    input: -
+    output: void
+    description: is called when you leave the fragment and call the function stopPreference the save the preferences in the mainActivity
+    */
     override fun onStop() {
         Log.d("DEBUG", "onStop")
         activityCallBack!!.stopPreference()

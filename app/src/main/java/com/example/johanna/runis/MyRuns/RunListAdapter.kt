@@ -1,5 +1,6 @@
 package com.example.johanna.runis.MyRuns
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import kotlinx.android.synthetic.main.item_run.view.*
 class RunListAdapter(context: Context,
                      private val runs: List<Run>?
 ): BaseAdapter() {
+
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val rowView = inflater.inflate(R.layout.item_run, parent, false)
 
@@ -22,10 +25,10 @@ class RunListAdapter(context: Context,
         tv.text = thisRun.date
 
         tv = rowView.tvTime as TextView
-        tv.text = thisRun.time.toString()
+        tv.text = thisRun.time
 
         tv = rowView.tvKm as TextView
-        tv.text = thisRun.km.toString()
+        tv.text = thisRun.km
 
         return rowView
     }

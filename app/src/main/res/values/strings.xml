@@ -16,7 +16,7 @@
     <string name="settings_headline3_sum">To change the Theme you have to restart the App afterwards</string>
     <string name="settings_name_sum">To change your name please click here</string>
     <string name="bt_title_start">Ready to connect</string>
-    <string name="bt_title_connecting">Connecting...</string>
+    <string name="bt_title_connecting">Connecting…</string>
     <string name="bt_title_accepted">Connected to device</string>
     <string name="bt_title_cannotfind">Cannot find the MoveSense device</string>
     <string name="bt_title_cannotconn">Cannot connect to the MoveSense device</string>
@@ -45,7 +45,10 @@
     <string name="myruns_time_total">total time: </string>
     <string name="runDetails">To delete this run, please click on the button in the bottom left corner.</string>
     <string name="delete_Toast">The run has been deleted</string>
-    <string name="main_Toast_noRunDetails">You are running this run, so you can not see the details</string>
-    <string name="main_Toast_noRun">You are running this run, so you can not start a new run</string>
+    <string name="main_Toast_noRunDetails">You are running this run so you can not see the details.</string>
+    <string name="main_Toast_noRun">You are running this run so you can not start a new run.</string>
+    <string name="main_Toast_noRunGPS">You GPS is switched off so you can not start a new run. Please go to settings and turn it on</string>
+    <string name="temperature">Outside temperature: </string>
+    <string name="cannot_use_temperature">This function is not available on this phone</string>
 
 </resources>
